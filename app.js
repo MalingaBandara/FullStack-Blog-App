@@ -6,6 +6,7 @@ require('dotenv').config();
 const express = require('express');     // Express for creating the HTTP server
 const app = express();                  // Initialize an Express application
 const mongoose = require('mongoose');   // Mongoose for connecting to MongoDB
+const User = require('./models/User');
 
 
 // ---------------- Server Configuration ----------------
@@ -37,14 +38,35 @@ app.get('/auth/register', (req, res) => {
 
 
 //! ----- Main logic for user registration ------
-app.post('/auth/register', async(req, res) => {
+app.post('/auth/register', async (req, res) => {
+  
+  // Extract fields from request body
+  const { username, email, password } = req.body;
 
-  // Log the form data
-  console.log( req.body );
+  try {
+    // 🔍 Check if user already exists by email
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).send('User with this email already exists');
+    }
 
-  res.send('User registered successfully!');
+    // ✨ Create a new user document
+    const newUser = new User({ username, email, password });
 
-})
+    // 💾 Save user to MongoDB
+    await newUser.save();
+
+    // ✅ After successful registration → redirect to login page
+    res.redirect('/auth/login');
+    
+  } catch (error) {
+    // ❌ Handle any server/database errors
+    console.error("Error registering user:", error);
+    res.status(500).send('Error registering user');
+  }
+  
+});
+
 
 
 //! ---------------- Database Connection ----------------
