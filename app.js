@@ -16,6 +16,10 @@ const PORT = process.env.PORT || 3000;  // Use PORT from .env or default to 3000
 app.set('view engine', 'ejs');  // Tells Express to use EJS for rendering views
 
 
+//? ---------------- Middleware: Passing form data ----------------
+app.use(express.urlencoded({ extended: true }));
+
+
 //! ----------------  Routes ---------------- 
 
 // * Login Page
@@ -34,6 +38,9 @@ app.get('/auth/register', (req, res) => {
 
 //! ----- Main logic for user registration ------
 app.post('/auth/register', async(req, res) => {
+
+  // Log the form data
+  console.log( req.body );
 
   res.send('User registered successfully!');
 
