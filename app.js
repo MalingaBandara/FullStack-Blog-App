@@ -32,6 +32,10 @@ app.get('/auth/register', (req, res) => {
 })
 
 
+//! ----- Main logic for user registration ------
+
+
+
 //! ---------------- Database Connection ----------------
 // Connect to MongoDB using the URL stored in the .env file
 mongoose.connect(process.env.MONGODB_URL)
