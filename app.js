@@ -12,6 +12,25 @@ const mongoose = require('mongoose');   // Mongoose for connecting to MongoDB
 const PORT = process.env.PORT || 3000;  // Use PORT from .env or default to 3000
 
 
+// ---------------- Setup EJS View Engine ----------------
+app.set('view engine', 'ejs');  // Tells Express to use EJS for rendering views
+
+
+//! ----------------  Routes ---------------- 
+
+// * Login Page
+app.get('/auth/login', (req, res) => {
+  // Renders the "login.ejs" file inside your "views" folder
+  res.render('login');
+});
+
+
+//* Register Page
+app.get('/auth/register', (req, res) => {
+  // Renders the "register.ejs" file inside your "views" folder
+  res.render('register');
+})
+
 
 //! ---------------- Database Connection ----------------
 // Connect to MongoDB using the URL stored in the .env file
