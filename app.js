@@ -33,7 +33,11 @@ app.get('/auth/register', (req, res) => {
 
 
 //! ----- Main logic for user registration ------
+app.post('/auth/register', async(req, res) => {
 
+  res.send('User registered successfully!');
+
+})
 
 
 //! ---------------- Database Connection ----------------
