@@ -9,6 +9,23 @@
     
     <h1>Register</h1>
 
+    <% 
+    // ✅ Check if the variable 'error' exists AND has a truthy value
+    // This ensures the error message only shows up when an error is actually present
+    if (typeof error !== 'undefined' && error) { 
+    %>
+
+        <!-- 🔴 Display the error message inside a styled <div> -->
+        <div style="color: red; margin-bottom: 10px">
+            <%= error %>  <!-- Output the error message from the server -->
+        </div>
+
+    <% 
+    // ✅ End of the 'if' condition block
+    } 
+    %>
+
+
     <form action="/auth/register" method="POST">
         <input type="text" name="username" placeholder="Username">
         <input type="email" name="email" placeholder="Email">
