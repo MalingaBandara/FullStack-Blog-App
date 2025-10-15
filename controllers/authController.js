@@ -1,4 +1,5 @@
 
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 // * Render Login Page
@@ -51,24 +52,39 @@ exports.register = async (req, res) => {
 
   try {
     // 🔍 Check if user already exists by email
-    const user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).send('User with this email already exists');
+    const existingUser = await User.findOne({ email });
+
+    // If user already exists, render the register page again with an error message
+    if (existingUser) {
+      return res.render('register', {
+        title: 'Register',       // Page title
+        user: req.username,      // Current session username (if available)
+        error: 'User already exists', // Message displayed on frontend
+      });
     }
 
-    // ✨ Create a new user document
-    const newUser = new User({ username, email, password });
+    //? Hash the password before saving (for security)
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 = salt rounds
 
-    // 💾 Save user to MongoDB
-    await newUser.save();
+    // Create a new user record in the database
+    const user = await User.create({
+      username,             // Username entered by the user
+      email,                // Email entered by the user
+      password: hashedPassword, // Store the hashed password
+    });
 
-    // ✅ After successful registration → redirect to login page
-    res.redirect('/auth/login');
-    
+    // After successful registration, redirect the user to the login page
+    res.redirect('auth/login');
+
   } catch (error) {
-    // ❌ Handle any server/database errors
-    console.error("Error registering user:", error);
-    res.status(500).send('Error registering user');
+    
+    // If any error occurs (e.g., database issue), re-render register page with error details
+    res.render('register', {
+      title: 'Register',     // Page title
+      user: req.username,    // Current session username (if available)
+      error: error.message,  // Error message to display
+    });
+
   }
   
 };
