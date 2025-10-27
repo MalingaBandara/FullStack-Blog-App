@@ -16,18 +16,35 @@ exports.getLogin = (req, res) => {
 
 //! Main logic for user Login
 exports.login = async (req, res, next) => {
-  
-  // * Use Passport's local authentication strategy
+
+  // * Use Passport's local strategy for authentication
   passport.authenticate("local", (err, user, info) => {
-    
-    // Log any authentication details for debugging
-    console.log({ err, user, info });
-    
-    // 'err' → unexpected error during authentication (e.g., DB issue)
-    // 'user' → authenticated user object if credentials are valid
-    // 'info' → additional info or error message (e.g., "Incorrect password")
-    
-  })(req, res, next); // Pass req, res, next to complete the middleware chain
+
+    // 🔹 If there's an unexpected error (e.g., DB error), forward it
+    if (err) {
+      return next(err);
+    }
+
+    // 🔹 If authentication fails (invalid email/password), show login page with error
+    if (!user) {
+      return res.render("login", { 
+        title: "Login", 
+        user: req.username, 
+        error: info.message // Display Passport's message (like "No user" or "Password incorrect")
+      });
+    }
+
+    // 🔹 Log the user in (establish a session)
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err); // Forward login error if occurs
+      }
+
+      // 🔹 On successful login, redirect to home page
+      return res.redirect("/");
+    });
+
+  })(req, res, next); // * Immediately invoke the authenticate middleware with req, res, next
 
 };
 
