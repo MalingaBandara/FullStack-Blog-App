@@ -77,7 +77,6 @@ app.use(passport.session());
 
 // * Auth Routes *
 const userRoutes = require('./routes/authRoutes');
-const passport = require('./config/passport');
 app.use( "/auth", userRoutes );
 
 

@@ -2,6 +2,11 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
+const passport = require('passport'); // * Import Passport.js for authentication handling
+// Passport provides strategies (like local, JWT, OAuth) to authenticate users in Node.js apps
+
+
+
 // * Render Login Page
 exports.getLogin = (req, res) => {
   // Renders the "login.ejs" file inside your "views" folder
@@ -10,29 +15,19 @@ exports.getLogin = (req, res) => {
 
 
 //! Main logic for user Login
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
   
-  const { email, password } = req.body; // Extract email and password from request body
-
-  try {
-    // 🔍 Check if user with the given email exists in the database
-    const user = await User.findOne({ email });
-
-    // 🔍 Check if there is any user with the given password
-    // (⚠️ Note: This only checks if password exists in DB, not tied to the above user)
-    const isMatch = await User.findOne({ password });
-
-    // ✅ If both email and password exist
-    if (user && isMatch) {
-      res.send('User logged in successfully'); // Success response
-    } else {
-      res.status(401).send('Invalid email or password'); // Failure response
-    }
-
-  } catch (error) {
-    console.error("Error logging in user:", error); // Log server-side error
-    res.status(500).send('Error logging in user');   // Send error response
-  }
+  // * Use Passport's local authentication strategy
+  passport.authenticate("local", (err, user, info) => {
+    
+    // Log any authentication details for debugging
+    console.log({ err, user, info });
+    
+    // 'err' → unexpected error during authentication (e.g., DB issue)
+    // 'user' → authenticated user object if credentials are valid
+    // 'info' → additional info or error message (e.g., "Incorrect password")
+    
+  })(req, res, next); // Pass req, res, next to complete the middleware chain
 
 };
 
