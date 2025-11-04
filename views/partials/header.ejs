@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nav</title>
+    
+    <%# ---------------- Dynamic Page Title ---------------- %>
+    <title><%= title %></title> <!-- Displays the page title passed from the server (e.g., "Login" or "Register") -->
+
+
 </head>
 <body>
     
@@ -12,7 +16,14 @@
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/auth/register">Register</a></li>
-            <li><a href="/auth/login">Login</a></li>
+            <li><a href="/auth/login">Login</a></li>\
+            <li><a href="/">Posts</a></li>
+            
+
+            <li><a href="/">Posts</a></li>
+            <li><a href="/auth/register">Profile</a></li>
+            <li><a href="/auth/login">Logout</a></li>
+
         </ul>
     </nav>
 

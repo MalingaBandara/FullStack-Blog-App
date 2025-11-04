@@ -55,7 +55,11 @@ exports.login = async (req, res, next) => {
 //* Register Page
 exports.getRegister = (req, res) => {
   // Renders the "register.ejs" file inside your "views" folder
-  res.render('register');
+  res.render('register', {
+    title: 'Register',    // Page title
+    user: req.username,   // Current session username (if available)
+    error: ""
+  });
 };
 
 
