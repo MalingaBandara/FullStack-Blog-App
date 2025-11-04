@@ -12,17 +12,28 @@
 <body>
     
 
+<%# ---------------- Navigation Bar ---------------- %>
     <nav>
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/auth/register">Register</a></li>
-            <li><a href="/auth/login">Login</a></li>\
-            <li><a href="/">Posts</a></li>
-            
 
-            <li><a href="/">Posts</a></li>
-            <li><a href="/auth/register">Profile</a></li>
-            <li><a href="/auth/login">Logout</a></li>
+            <%# Check if a user is logged in %>
+            <% if (user) { %>
+
+                <%# Links visible when the user is logged in (Private Links) %>
+                <li><a href="/">Home</a></li>
+                <li><a href="/">Posts</a></li>
+                <li><a href="/auth/register">Profile</a></li>
+                <li><a href="/auth/login">Logout</a></li>
+
+            <% } else { %>
+
+                <%# Links visible when no user is logged in (Public Links) %>
+                <li><a href="/">Home</a></li>
+                <li><a href="/auth/register">Register</a></li>
+                <li><a href="/auth/login">Login</a></li>
+                <li><a href="/">Posts</a></li>
+
+            <% } %>
 
         </ul>
     </nav>

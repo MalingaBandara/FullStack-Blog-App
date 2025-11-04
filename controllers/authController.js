@@ -12,6 +12,7 @@ exports.getLogin = (req, res) => {
   // Renders the "login.ejs" file inside your "views" folder
   res.render('login', {
     title: 'Login',    // Page title
+    user: req.user,   // Current session user (if available)
     error: ""
   });
 };
@@ -32,7 +33,7 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return res.render("login", { 
         title: "Login", 
-        user: req.username, 
+        user: req.user, 
         error: info.message // Display Passport's message (like "No user" or "Password incorrect")
       });
     }
@@ -57,7 +58,7 @@ exports.getRegister = (req, res) => {
   // Renders the "register.ejs" file inside your "views" folder
   res.render('register', {
     title: 'Register',    // Page title
-    user: req.username,   // Current session username (if available)
+    user: req.user,   // Current session username (if available)
     error: ""
   });
 };
@@ -77,7 +78,7 @@ exports.register = async (req, res) => {
     if (existingUser) {
       return res.render('register', {
         title: 'Register',       // Page title
-        user: req.username,      // Current session username (if available)
+        user: req.user,      // Current session user(if available)
         error: 'User already exists', // Message displayed on frontend
       });
     }
@@ -100,7 +101,7 @@ exports.register = async (req, res) => {
     // If any error occurs (e.g., database issue), re-render register page with error details
     res.render('register', {
       title: 'Register',     // Page title
-      user: req.username,    // Current session username (if available)
+      user: req.user,    // Current session user (if available)
       error: error.message,  // Error message to display
     });
 
