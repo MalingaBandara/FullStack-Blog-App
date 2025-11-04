@@ -10,7 +10,10 @@ const passport = require('passport'); // * Import Passport.js for authentication
 // * Render Login Page
 exports.getLogin = (req, res) => {
   // Renders the "login.ejs" file inside your "views" folder
-  res.render('login');
+  res.render('login', {
+    title: 'Login',    // Page title
+    error: ""
+  });
 };
 
 
