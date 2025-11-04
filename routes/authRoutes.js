@@ -3,7 +3,7 @@ const express = require('express');
 
 
 // Import controller functions for authentication logic
-const { getLogin, login, getRegister, register } = require('../controllers/authController');
+const { getLogin, login, getRegister, register, logout } = require('../controllers/authController');
 
 // Initialize router
 const userRoutes = express.Router();
@@ -25,6 +25,10 @@ userRoutes.get('/register', getRegister);
 
 //! ----- Main logic for user registration ------
 userRoutes.post('/register', register);
+
+
+// ---------------- Logout Route ----------------
+userRoutes.get( '/logout', logout )
 
 
 // ---------------- Export Router ----------------

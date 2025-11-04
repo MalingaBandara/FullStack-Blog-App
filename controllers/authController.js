@@ -108,3 +108,31 @@ exports.register = async (req, res) => {
   }
   
 };
+
+
+
+//* Logout
+// Exporting the logout function so it can be used in route files
+exports.logout = (req, res) => {
+  
+  // Call Passport's built-in logout method to end the user's session
+  req.logout((err) => {
+    
+    // If an error occurs during logout, pass it to the next middleware (error handler)
+    if (err) {
+      return next(err);
+    }
+
+     req.session.destroy((err) => {
+      if (err) {
+        return next(err);
+      }
+
+      // Clear the cookie from the client side (important!)
+      res.clearCookie('connect.sid', { path: '/' });
+
+      // Redirect the user to login page after full logout
+      res.redirect('/auth/login');
+    });
+  });
+};
