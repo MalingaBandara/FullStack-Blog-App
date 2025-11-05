@@ -1,0 +1,16 @@
+.brand-text {
+    font-size: 60px;          /* same as logo height */
+    line-height: 90px;        /* vertically center */
+    font-weight: 700;         /* bold */
+    color: hsl(197, 57%, 56%);              /* white text */
+    font-family: "Stack Sans Notch", sans-serif;
+}
+
+/* Footer Dock styling */
+footer {
+  background-color: #222;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

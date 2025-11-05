@@ -7,6 +7,9 @@ const express = require('express');     // Express for creating the HTTP server
 const app = express();                  // Initialize an Express application
 const mongoose = require('mongoose');   // Mongoose for connecting to MongoDB
 
+// ✅ Serve static files from the "public" folder
+app.use(express.static('public'));
+
 const MongoStore = require('connect-mongo'); // * Store session data in MongoDB for persistence across server restarts
 
 
