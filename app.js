@@ -82,6 +82,14 @@ app.use(passport.session());
 const userRoutes = require('./routes/authRoutes');
 app.use( "/auth", userRoutes );
 
+// * Home Route *
+app.get( "/", (req, res) => {
+  res.render("home", {
+    title: "Home",
+    user: req.user,
+    error: ""
+  });
+})
 
 
 //! ---------------- Database Connection ----------------
