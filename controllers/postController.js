@@ -21,6 +21,9 @@ exports.createPost = async (req, res) => {
     // * Extract title and content fields from the submitted form data (req.body)
     const { title, content } = req.body;
 
+    console.log(req.files); // * Log uploaded files to check multer/Cloudinary integration
+    
+
     // * Create a new Post document in the database
     //   - title: post title from form input
     //   - content: post body text

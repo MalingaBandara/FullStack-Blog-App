@@ -58,6 +58,82 @@ textarea {
     resize: vertical;
 }
 
+/* File Upload Styles */
+.file-upload-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-upload-input {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    display: block;
+    padding: 20px;
+    background: #f8f9fa;
+    border: 2px dashed #667eea;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-upload-label:hover {
+    background: #e9ecef;
+    border-color: #764ba2;
+}
+
+.file-upload-label i {
+    font-size: 2rem;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.file-preview {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.file-preview-item {
+    position: relative;
+    padding: 10px 15px;
+    background: #e9ecef;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-preview-item .remove-file {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    line-height: 1;
+}
+
+.file-preview-item .remove-file:hover {
+    background: #c82333;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .form-container {
@@ -80,7 +156,9 @@ textarea {
                 <p>Share your thoughts with the world</p>
             </div>
             
-            <form id="blogPostForm" action="/posts/add" method="POST" >
+            <form id="blogPostForm" action="/posts/add" method="POST"  enctype="multipart/form-data" >
+                
+
                 <div class="mb-4">
                     <label for="postTitle" class="form-label">Post Title</label>
                     <input 
@@ -89,10 +167,10 @@ textarea {
                         id="postTitle" 
                         name="title"
                         placeholder="Enter your post title..."
-                        required
-                    >
+                        required>
                 </div>
                 
+
                 <div class="mb-4">
                     <label for="postContent" class="form-label">Post Content</label>
                     <textarea 
@@ -101,11 +179,38 @@ textarea {
                         name="content"
                         rows="12" 
                         placeholder="Write your post content here..."
-                        required
-                    ></textarea>
+                        required></textarea>
                     <div class="form-text">Write your blog post content in markdown or plain text.</div>
                 </div>
                 
+                <!-- File Upload Section -->
+                <div class="mb-4">
+                <label for="image" class="form-label">Upload Files (Optional)</label>
+                <div class="file-upload-wrapper">
+                    <input 
+                    type="file" 
+                    class="file-upload-input" 
+                    id="image" 
+                    name="image"
+                    multiple
+                    accept="image/jpeg, image/png, image/jpg"
+                    onchange="handleFileSelect(event)" >
+                    <label for="postFiles" class="file-upload-label">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    <strong>Click to upload</strong> or drag and drop
+                    <div class="form-text mt-2">Images (JPEG, JPG, PNG - Max 10MB per file)</div>
+                    </label>
+                </div>
+                <div id="filePreview" class="file-preview"></div>
+                </div>
+
+
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary btn-submit">
                         Publish Post
@@ -120,6 +225,49 @@ textarea {
     </div>
 
 </div>
+
+
+<script>
+//* Function to handle file selection and display a preview list
+function handleFileSelect(event) {
+    const files = event.target.files; // Get selected files from input
+    const preview = document.getElementById('filePreview'); // Get the preview container
+    preview.innerHTML = ''; // Clear previous previews
+
+    // Loop through selected files and display each one
+    Array.from(files).forEach((file, index) => {
+        const fileItem = document.createElement('div'); // Create a div for each file preview
+        fileItem.className = 'file-preview-item'; // Add CSS class for styling
+
+        // Add file icon, name, size, and a remove (×) button
+        fileItem.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                <polyline points="13 2 13 9 20 9"></polyline>
+            </svg>
+            <span>${file.name} (${(file.size / 1024).toFixed(1)} KB)</span>
+            <button type="button" class="remove-file" onclick="removeFile(${index})">&times;</button>
+        `;
+        preview.appendChild(fileItem); // Add file preview item to the preview container
+    });
+}
+
+//* Function to remove a file from the selected list
+function removeFile(index) {
+    const input = document.getElementById('postFiles'); // Get the file input element
+    const dt = new DataTransfer(); // Create a new DataTransfer object (acts like a clipboard for files)
+    const files = Array.from(input.files); // Convert FileList to an array
+
+    // Re-add all files except the one with the specified index
+    files.forEach((file, i) => {
+        if (i !== index) dt.items.add(file);
+    });
+
+    input.files = dt.files; // Update input files with the remaining ones
+    handleFileSelect({ target: input }); // Refresh preview after removal
+}
+</script>
 
 
 

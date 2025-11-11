@@ -10,9 +10,9 @@ postRoutes.get("/add", getPostForm);
 
 
 // * POST route to create a new post
-//   - 'upload.array("images", 5)' allows uploading up to 5 images with the form field name 'images'
+//   - 'upload.array("image", 5)' allows uploading up to 5 images with the form field name 'image'
 //   - After successful upload, the 'createPost' controller handles saving post data
-postRoutes.post("/add", upload.array("images", 5), createPost);
+postRoutes.post("/add", upload.array("image", 5), createPost);
 
 
 module.exports = postRoutes;
