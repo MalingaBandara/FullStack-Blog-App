@@ -84,12 +84,13 @@ app.use( "/auth", userRoutes );
 
 // * Home Route *
 app.get( "/", (req, res) => {
-  res.render("home", {
-    title: "Home",
-    user: req.user,
-    error: ""
-  });
+  res.render( "home", { title: "Home", user: req.user, error: "" });
 })
+
+// * Post Routes *
+const postRoutes = require('./routes/postRoutes');
+app.use( "/posts", postRoutes );
+
 
 
 //! ---------------- Database Connection ----------------
