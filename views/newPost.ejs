@@ -269,19 +269,31 @@ function removeFile(index) {
 }
 
 
-// Backend will send `success` only when a post is created
+// Retrieve the success message sent from the backend via EJS.
+// If 'success' is undefined, assign an empty string to avoid errors.
 const successFromServer = "<%= typeof success !== 'undefined' ? success : '' %>";
 
+// Check if there is a success message from the backend.
+// If the message exists (not empty), we proceed to show it in the frontend.
 if (successFromServer) {
+
+    // Select the HTML element that will display the success message.
     const msgBox = document.getElementById("successMessage");
-    msgBox.style.display = "block";        // Show success alert
+
+    // Make the success message visible by changing its CSS 'display' property from 'none' to 'block'.
+    msgBox.style.display = "block";
+
+    // Update the content of the <strong> tag inside the success message div
+    // so that it shows the actual message sent from the backend.
     msgBox.querySelector("strong").innerText = successFromServer;
-    
-    // Optional: Auto-hide after 3 seconds
+
+    // OPTIONAL: Automatically hide the success message after 3 seconds (3000 milliseconds)
+    // This improves UX so the user doesn't have to manually dismiss it.
     setTimeout(() => {
-        msgBox.style.display = "none";
+        msgBox.style.display = "none"; // Hide the message after timeout
     }, 3000);
 }
+
 
 </script>
 
