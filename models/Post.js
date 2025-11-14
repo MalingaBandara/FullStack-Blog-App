@@ -23,7 +23,7 @@ const postSchema = new mongoose.Schema(
       ref: 'User', // references User model
     },
 
-    // Array of images for the post
+    //Array of images for the post
     // images: [
     //   {
     //     // Image URL (e.g., Cloudinary, S3, etc.)
