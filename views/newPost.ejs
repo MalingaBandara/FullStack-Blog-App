@@ -219,7 +219,7 @@ textarea {
             </form>
             
             <div id="successMessage" class="alert alert-success mt-4" style="display: none;">
-                <strong>Success!</strong> Your blog post has been created.
+                <strong></strong>
             </div>
         </div>
     </div>
@@ -267,6 +267,22 @@ function removeFile(index) {
     input.files = dt.files; // Update input files with the remaining ones
     handleFileSelect({ target: input }); // Refresh preview after removal
 }
+
+
+// Backend will send `success` only when a post is created
+const successFromServer = "<%= typeof success !== 'undefined' ? success : '' %>";
+
+if (successFromServer) {
+    const msgBox = document.getElementById("successMessage");
+    msgBox.style.display = "block";        // Show success alert
+    msgBox.querySelector("strong").innerText = successFromServer;
+    
+    // Optional: Auto-hide after 3 seconds
+    setTimeout(() => {
+        msgBox.style.display = "none";
+    }, 3000);
+}
+
 </script>
 
 

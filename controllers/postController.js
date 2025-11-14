@@ -52,9 +52,6 @@ exports.createPost = async (req, res) => {
             // * Save the file record into the database
             await newFile.save();
 
-            // * Log the saved file object for debugging and confirmation
-            console.log(newFile);
-
             // * Return only the necessary details to attach to the Post model later
             return {
                 url: newFile.url,
@@ -63,6 +60,33 @@ exports.createPost = async (req, res) => {
 
         })
     );
+
+
+    // * Create a new Post document instance using the Post model
+    // * We pass in all required fields:
+    //   - title: comes from the form input
+    //   - content: the blog post body text
+    //   - author: the logged-in user (req.user._id)
+    //   - images: array of uploaded image objects (url + public_id)
+    const newPost = new Post({
+        title,
+        content,
+        author: req.user._id,
+        images,
+    });
+
+    // * Save the newly created post to the MongoDB database
+    // * This returns a promise, so we await it
+    await newPost.save();
+
+    // * After saving successfully, re-render the newPost form
+    // * We pass a success message so the user knows the post was created
+    // * This success message can be shown on the EJS page
+    res.render("newPost", {
+        title: "Create Post",
+        user: req.user,
+        success: "Your blog post has been created successfully."
+    });
 };
 
 

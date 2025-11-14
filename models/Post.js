@@ -24,21 +24,21 @@ const postSchema = new mongoose.Schema(
     },
 
     //Array of images for the post
-    // images: [
-    //   {
-    //     // Image URL (e.g., Cloudinary, S3, etc.)
-    //     url: {
-    //       type: String,
-    //       required: true,
-    //     },
+    images: [
+      {
+        // Image URL (e.g., Cloudinary, S3, etc.)
+        url: {
+          type: String,
+          required: true,
+        },
 
-    //     // Public ID of the image (useful for Cloudinary deletion)
-    //     public_id: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //   }
-    // ],
+        // Public ID of the image (useful for Cloudinary deletion)
+        public_id: {
+          type: String,
+          required: true,
+        },
+      }
+    ],
 
     // References to comments on the post
     comments: [
