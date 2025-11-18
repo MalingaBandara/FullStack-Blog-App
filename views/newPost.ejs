@@ -145,6 +145,44 @@ textarea {
         padding: 20px 0;
     }
 }
+
+
+/*  Wrapper container for each image + remove button. */
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+}
+
+.preview-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 16px;
+    line-height: 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.remove-btn:hover {
+    background: #ff0000;
+}
+
+/* ------------- */
+
 </style>
 
 <div class="post-body">
@@ -300,7 +338,7 @@ if (successFromServer) {
 
 <script>
    
-    function previewImages(){ 
+    /* function previewImages(){ 
         
         const preview = document.getElementById('filePreview');// Get the preview container where images will be displayed
         preview.innerHTML = ''; // Clear previous previews
@@ -320,8 +358,67 @@ if (successFromServer) {
 
         }
 
-    }
+    } */
     
+    function previewImages() {
+    
+        const preview = document.getElementById('filePreview'); // Get the preview container where all image previews will appear
+        preview.innerHTML = '';   // * Clear previous previews before showing new ones
+        
+        const input = document.getElementById('image');// * Get the <input type="file"> element
+        const files = Array.from(input.files); // * Convert FileList into a real array for easy iteration
+
+        // * Loop over each selected file
+        files.forEach((file, index) => {
+
+            // Create a wrapper div for both image + remove button
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("image-wrapper");
+
+            const img = document.createElement("img"); // Create an <img> element for showing the preview
+            img.src = URL.createObjectURL(file); // Convert the file into a temporary URL so it can be shown in the browser
+            img.classList.add("preview-img");  // Add styling classes for the preview image
+
+             // Create a remove button (×)
+            const removeBtn = document.createElement("button");
+            removeBtn.innerHTML = "&times;";  // × icon
+            removeBtn.classList.add("remove-btn");
+
+           // When user clicks the remove button → remove the file at this index
+            removeBtn.onclick = () => removeFile(index);
+
+            // Append image + button into wrapper
+            wrapper.appendChild(img);
+            wrapper.appendChild(removeBtn);
+
+             // Add the completed preview box to the preview container
+            preview.appendChild(wrapper);
+            console.log(wrapper);
+        });
+    }
+
+
+    function removeFile(index) {
+
+        const input = document.getElementById('image'); // Get the file input element (<input type="file">)
+        
+         // * Create a new DataTransfer object
+        //   - This allows us to rebuild the file list after removing one file
+        const dt = new DataTransfer();
+
+        const files = Array.from(input.files); // Convert FileList into a real array so we can loop through it
+
+        // Loop through all selected files
+        files.forEach((file, i) => {
+            if (i !== index) dt.items.add(file); // Add only the files that are NOT the removed index
+        });
+
+        input.files = dt.files;  // Replace old file list with the new one (without the removed file)
+
+        previewImages(); // Re-render the preview section so UI updates immediately
+    }
+
+
 </script>
 
 <%# ---------------- Include Footer Partial ---------------- %>
