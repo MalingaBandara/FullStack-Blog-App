@@ -194,7 +194,8 @@ textarea {
                     name="image"
                     multiple
                     accept="image/jpeg, image/png, image/jpg"
-                    onchange="handleFileSelect(event)" required >
+                    onchange="previewImages()"
+                    required > <!-- onchange="handleFileSelect(event)" -->
                     <label for="postFiles" class="file-upload-label">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -229,7 +230,7 @@ textarea {
 
 <script>
 //* Function to handle file selection and display a preview list
-function handleFileSelect(event) {
+/* function handleFileSelect(event) {
     const files = event.target.files; // Get selected files from input
     const preview = document.getElementById('filePreview'); // Get the preview container
     preview.innerHTML = ''; // Clear previous previews
@@ -266,7 +267,7 @@ function removeFile(index) {
 
     input.files = dt.files; // Update input files with the remaining ones
     handleFileSelect({ target: input }); // Refresh preview after removal
-}
+} */
 
 
 // Retrieve the success message sent from the backend via EJS.
@@ -297,7 +298,31 @@ if (successFromServer) {
 
 </script>
 
+<script>
+   
+    function previewImages(){ 
+        
+        const preview = document.getElementById('filePreview');// Get the preview container where images will be displayed
+        preview.innerHTML = ''; // Clear previous previews
 
+        const files = document.getElementById('image').files; // Get all selected files from the input field with id="image"
+        
+         // * Loop through each selected file
+        for( let i = 0; i < files.length; i++ ){
+
+            const img = document.createElement( 'img' ); // Create an <img> element to display the preview
+            img.src = URL.createObjectURL( files[i] ); // Convert the uploaded file into a temporary URL for preview
+            img.classList.add( 'img-thumbnail', 'mr-2', 'mb-2' ); // Add Bootstrap CSS classes for styling
+            img.style.maxWidth = '150px';  // Limit the preview image size
+            img.style.objectFit = 'cover'; // Ensure image fills its box without stretching
+
+            preview.appendChild( img ); // Append the generated <img> into the preview container
+
+        }
+
+    }
+    
+</script>
 
 <%# ---------------- Include Footer Partial ---------------- %>
 <%- include('partials/footer') %>
