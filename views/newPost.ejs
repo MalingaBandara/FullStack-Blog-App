@@ -194,7 +194,7 @@ textarea {
                 <p>Share your thoughts with the world</p>
             </div>
             
-            <form id="blogPostForm" action="/posts/add" method="POST"  enctype="multipart/form-data" >
+            <form id="blogPostForm" action="/posts/add" method="POST"  enctype="multipart/form-data" onsubmit="validationForm()" >
                 
 
                 <div class="mb-4">
@@ -204,8 +204,7 @@ textarea {
                         class="form-control form-control-lg" 
                         id="postTitle" 
                         name="title"
-                        placeholder="Enter your post title..."
-                        required>
+                        placeholder="Enter your post title..." >
                 </div>
                 
 
@@ -216,8 +215,7 @@ textarea {
                         id="postContent" 
                         name="content"
                         rows="12" 
-                        placeholder="Write your post content here..."
-                        required></textarea>
+                        placeholder="Write your post content here..."></textarea>
                     <div class="form-text">Write your blog post content in markdown or plain text.</div>
                 </div>
                 
@@ -232,8 +230,7 @@ textarea {
                     name="image"
                     multiple
                     accept="image/jpeg, image/png, image/jpg"
-                    onchange="previewImages()"
-                    required > <!-- onchange="handleFileSelect(event)" -->
+                    onchange="previewImages()" > <!-- onchange="handleFileSelect(event)" -->
                     <label for="postFiles" class="file-upload-label">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -260,6 +257,11 @@ textarea {
             <div id="successMessage" class="alert alert-success mt-4" style="display: none;">
                 <strong></strong>
             </div>
+
+            <div id="formAlert" class="alert alert-warning d-none mt-3">
+                 <strong>Warning!</strong> Please fill in all required fields.
+            </div>
+            
         </div>
     </div>
 
@@ -416,6 +418,24 @@ if (successFromServer) {
 
         previewImages(); // Re-render the preview section so UI updates immediately
     }
+
+
+    function validationForm() {
+
+        const title = document.getElementById( 'postTitle' ).value; // Get the value of the input field with id 'postTitle'
+        const content = document.getElementById( 'postContent' ).value; // Get the value of the textarea with id 'postContent'
+
+        // Check if either 'title' or 'content' is empty
+        if ( !title || !content){
+
+            alert( "Please fill in all required fields." );// If either field is empty, show an alert message to the user 
+            return false;  // Return false to prevent the form from submitting
+        }
+
+        return true; // If both fields are filled, return true to allow the form to submit
+
+    }
+
 
 
 </script>
