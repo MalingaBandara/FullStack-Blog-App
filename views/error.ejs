@@ -1,11 +1,222 @@
 <%- include('partials/header', { title: 'Error', user: user }) %>
 
+<style>
+    /* Error Page Styles */
 
-<h1>Something went wrong</h1>
+.error-body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-<p>
-    <%- error %>
-</p>
+.error-container {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 100%;
+    animation: slideIn 0.5s ease-out;
+}
 
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-code {
+    font-size: 80px;
+    line-height: 1;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.error-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    font-size: 18px;
+    color: #6c757d;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.error-icon {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 30px;
+    position: relative;
+}
+
+.error-icon svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 5px 15px rgba(102, 126, 234, 0.3));
+}
+
+.btn-home {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 40px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+    margin: 5px;
+}
+
+.btn-home:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.btn-back {
+    background: white;
+    border: 2px solid #667eea;
+    color: #667eea;
+    padding: 12px 40px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+}
+
+.btn-back:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+.suggestions {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+}
+
+.suggestions h5 {
+    color: #495057;
+    margin-bottom: 15px;
+}
+
+.suggestions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.suggestions li {
+    color: #6c757d;
+    margin: 8px 0;
+}
+
+.suggestions a {
+    color: #667eea;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.suggestions a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 60px;
+    }
+    
+    .error-title {
+        font-size: 24px;
+    }
+    
+    .error-message {
+        font-size: 16px;
+    }
+    
+    .error-container {
+        padding: 30px 20px;
+    }
+    
+    .btn-home, .btn-back {
+        padding: 10px 30px;
+        font-size: 14px;
+        display: block;
+        margin: 10px 0;
+    }
+}
+</style>
+
+<div class="error-body">
+    <div class="error-container">
+        <div class="error-icon">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="80" fill="#667eea" opacity="0.1"/>
+                <path d="M100 40 L100 120 M100 140 L100 160" stroke="#667eea" stroke-width="8" stroke-linecap="round"/>
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#764ba2" stroke-width="3" stroke-dasharray="5,5">
+                    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="10s" repeatCount="indefinite"/>
+                </circle>
+            </svg>
+        </div>
+        
+        <div class="error-code">⚠️</div>
+        <h1 class="error-title">Something Went Wrong</h1>
+        <p class="error-message" style="color: #dc3545;">
+            <%- error %>
+        </p>
+        
+        <div class="mt-4">
+            <a href="/" class="btn btn-home">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door-fill me-2" viewBox="0 0 16 16" style="display: inline-block; vertical-align: middle;">
+                    <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
+                </svg>
+                Go Home
+            </a>
+            <a href="javascript:history.back()" class="btn btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16" style="display: inline-block; vertical-align: middle;">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+                Go Back
+            </a>
+        </div>
+        
+        <div class="suggestions" hidden>
+            <h5>Here are some helpful links instead:</h5>
+            <ul>
+                <li><a href="/">🏠 Home</a></li>
+                <li><a href="/posts">📝 Blog Posts</a></li>
+                <li><a href="/about">ℹ️ About Us</a></li>
+                <li><a href="/contact">✉️ Contact</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
 
 <%- include('partials/footer') %>
