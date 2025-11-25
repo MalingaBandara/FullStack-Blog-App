@@ -4,9 +4,12 @@ const { url } = require("../config/cloudinary");
 const Post = require("../models/Post");
 const File = require("../models/File");
 
+// * asyncHandler: wraps async route functions and automatically forwards errors to Express, so we don’t need try/catch blocks.
+const asyncHandler = require("express-async-handler");
+
 
 //* Rendering post form
-exports.getPostForm = (req, res) => {
+exports.getPostForm = asyncHandler( (req, res) => {
 
     // * Render the "newPost" EJS template when this route is accessed
     // * Pass data to the view:
@@ -14,27 +17,29 @@ exports.getPostForm = (req, res) => {
     //   - user: provides the logged-in user info (req.user) to the template
     res.render( "newPost", { title: "Create Post", user: req.user });
 
-};
+}
+);
 
 
 //! Creating a new post
-exports.createPost = async (req, res) => {
+// * asyncHandler automatically catches errors in async routes and forwards them to Express’s errorHandler, removing the need for try/catch blocks.
+exports.createPost = asyncHandler( async (req, res) => {
 
     // * Extract the text fields (title, content) sent from the form submission
     const { title, content } = req.body;
 
     // * Validate that at least one file was uploaded (req.files is set by multer)
-    if (!req.files || req.files.length === 0) {
+    // if (!req.files || req.files.length === 0) {
 
-        // * If no files, re-render the form with an error message for the user 
-        // * NOTE: this returns early so the rest of the handler won't run
-        return res.render("newPOst", {
-            title: "Create Post",
-            user: req.user,
-            error: "At least one image is required",
-        });
+    //     // * If no files, re-render the form with an error message for the user 
+    //     // * NOTE: this returns early so the rest of the handler won't run
+    //     return res.render("newPOst", {
+    //         title: "Create Post",
+    //         user: req.user,
+    //         error: "At least one image is required",
+    //     });
 
-    }
+    // }
 
     // * Process each uploaded image using Promise.all
     // * This allows parallel execution of async tasks for each file
@@ -87,6 +92,7 @@ exports.createPost = async (req, res) => {
         user: req.user,
         success: "Your blog post has been created successfully."
     });
-};
+}
+);
 
 

@@ -30,6 +30,7 @@ const passportConfig = require('./config/passport');
 
 
 
+
 // ---------------- Server Configuration ----------------
 const PORT = process.env.PORT || 3000;  // Use PORT from .env or default to 3000
 
@@ -90,6 +91,14 @@ app.get( "/", (req, res) => {
 // * Post Routes *
 const postRoutes = require('./routes/postRoutes');
 app.use( "/posts", postRoutes );
+
+
+
+// * Import the global error-handling middleware
+const errorHandler = require('./middlewares/errorHandler');
+
+// * Register the error-handling middleware so it catches errors from all routes
+app.use(errorHandler);
 
 
 

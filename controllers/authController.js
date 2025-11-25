@@ -6,20 +6,24 @@ const passport = require('passport'); // * Import Passport.js for authentication
 // Passport provides strategies (like local, JWT, OAuth) to authenticate users in Node.js apps
 
 
+// * asyncHandler: wraps async route functions and automatically forwards errors to Express, so we don’t need try/catch blocks.
+const asyncHandler = require("express-async-handler");
+
 
 // * Render Login Page
-exports.getLogin = (req, res) => {
+exports.getLogin =  asyncHandler( (req, res) => {
   // Renders the "login.ejs" file inside your "views" folder
   res.render('login', {
     title: 'Login',    // Page title
     user: req.user,   // Current session user (if available)
     error: ""
   });
-};
+}
+);
 
 
 //! Main logic for user Login
-exports.login = async (req, res, next) => {
+exports.login = asyncHandler ( async (req, res, next) => {
 
   // * Use Passport's local strategy for authentication
   passport.authenticate("local", (err, user, info) => {
@@ -50,22 +54,24 @@ exports.login = async (req, res, next) => {
 
   })(req, res, next); // * Immediately invoke the authenticate middleware with req, res, next
 
-};
+}
+);
 
 
 //* Register Page
-exports.getRegister = (req, res) => {
+exports.getRegister = asyncHandler( (req, res) => {
   // Renders the "register.ejs" file inside your "views" folder
   res.render('register', {
     title: 'Register',    // Page title
     user: req.user,   // Current session username (if available)
     error: ""
   });
-};
+}
+);
 
 
 //! Main logic for user registration
-exports.register = async (req, res) => {
+exports.register = asyncHandler( async (req, res) => {
   
   // Extract fields from request body
   const { username, email, password } = req.body;
@@ -107,13 +113,13 @@ exports.register = async (req, res) => {
 
   }
   
-};
-
+}
+);
 
 
 //* Logout
 // Exporting the logout function so it can be used in route files
-exports.logout = (req, res) => {
+exports.logout = asyncHandler( (req, res) => {
   
   // Call Passport's built-in logout method to end the user's session
   req.logout((err) => {
@@ -135,4 +141,5 @@ exports.logout = (req, res) => {
       res.redirect('/auth/login');
     });
   });
-};
+}
+);
