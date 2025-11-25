@@ -11,7 +11,7 @@ const userRoutes = express.Router();
 
 // ---------------- Login Routes ----------------
 
-// * Render Login Page
+//? Render Login Page
 userRoutes.get('/login', getLogin);
 
 //! ----- Main logic for user Login ------
@@ -20,7 +20,7 @@ userRoutes.post('/login', login);
 
 // ---------------- Registration Routes ----------------
 
-// * Render Register Page
+//? Render Register Page
 userRoutes.get('/register', getRegister);
 
 //! ----- Main logic for user registration ------
