@@ -29,17 +29,17 @@ exports.createPost = asyncHandler( async (req, res) => {
     const { title, content } = req.body;
 
     // * Validate that at least one file was uploaded (req.files is set by multer)
-    // if (!req.files || req.files.length === 0) {
+    if (!req.files || req.files.length === 0) {
 
-    //     // * If no files, re-render the form with an error message for the user 
-    //     // * NOTE: this returns early so the rest of the handler won't run
-    //     return res.render("newPOst", {
-    //         title: "Create Post",
-    //         user: req.user,
-    //         error: "At least one image is required",
-    //     });
+        // * If no files, re-render the form with an error message for the user 
+        // * NOTE: this returns early so the rest of the handler won't run
+        return res.render("newPOst", {
+            title: "Create Post",
+            user: req.user,
+            error: "At least one image is required",
+        });
 
-    // }
+    }
 
     // * Process each uploaded image using Promise.all
     // * This allows parallel execution of async tasks for each file
@@ -96,3 +96,16 @@ exports.createPost = asyncHandler( async (req, res) => {
 );
 
 
+
+//! Get All Posts
+exports.getPosts = asyncHandler( async (req, res) => {
+
+    const posts = await Post.find().populate( "author", "username" );
+
+    res.render("posts", {
+        title: "Posts",
+        posts,
+        user: req.user,
+    });
+    
+});

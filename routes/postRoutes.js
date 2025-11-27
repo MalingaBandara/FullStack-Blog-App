@@ -1,5 +1,5 @@
 const express = require("express");
-const { getPostForm, createPost } = require("../controllers/postController");
+const { getPostForm, createPost, getPosts } = require("../controllers/postController");
 const postRoutes = express.Router();
 
 const upload = require("../config/multer"); // * Import the Multer upload configuration (handles image uploads to Cloudinary)
@@ -25,6 +25,10 @@ postRoutes.post(
     // * createPost → controller function that saves the post in the database
     createPost
 );
+
+
+//? Get all posts
+postRoutes.get("/", getPosts );
 
 
 module.exports = postRoutes;
