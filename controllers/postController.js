@@ -98,14 +98,20 @@ exports.createPost = asyncHandler( async (req, res) => {
 
 
 //! Get All Posts
-exports.getPosts = asyncHandler( async (req, res) => {
+exports.getPosts = asyncHandler(async (req, res) => {
 
-    const posts = await Post.find().populate( "author", "username" );
+    // * Fetch all posts from the database
+    // * .populate("author", "username") replaces the author ID with the actual user document
+    // * but only selects the "username" field for efficiency
+    const posts = await Post.find().populate("author", "username");
 
+    // * Render the "posts" EJS template
+    // * Pass the page title, posts data, and logged-in user details to the view
     res.render("posts", {
-        title: "Posts",
-        posts,
-        user: req.user,
+        title: "Posts",   // * Page title
+        posts,            // * All fetched posts
+        user: req.user,   // * Current logged-in user (if any)
     });
-    
+
 });
+

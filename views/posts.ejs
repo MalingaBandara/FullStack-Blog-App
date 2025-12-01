@@ -1,8 +1,29 @@
+
+
 <%# ---------------- Include Header Partial ---------------- %>
 <%- include('partials/header', { title , user: user }) %>
 
 <h1> Posts</h1>
 
+<% if (posts?.length > 0) { %> <%# * Check if there are any posts to display %>
+
+    <% posts.forEach(post => { %> <%# * Loop through each post in the posts array %>
+
+        <div>
+            <h2><%- post.title %></h2> <%# * Display the post title (escaped output to prevent XSS) %>
+
+            <p><%- post.content %></p>  <%# * Display the post content (escaped for safety) %>
+        </div>
+
+    <% }) %>
+
+<% } else { %>
+
+    <p>No posts found</p>  <%# * Message shown when there are no posts in the database %>
+
+<% } %>
+
 
 <%# ---------------- Include Footer Partial ---------------- %>
 <%- include('partials/footer') %>
+
