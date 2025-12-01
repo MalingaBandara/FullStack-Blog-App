@@ -114,4 +114,3 @@ exports.getPosts = asyncHandler(async (req, res) => {
     });
 
 });
-

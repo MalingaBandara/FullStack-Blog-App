@@ -7,10 +7,14 @@
 
 <% if (posts?.length > 0) { %> <%# * Check if there are any posts to display %>
 
-    <% posts.forEach(post => { %> <%# * Loop through each post in the posts array %>
+    <% posts.forEach( post => { %> <%# * Loop through each post in the posts array %>
 
         <div>
             <h2><%- post.title %></h2> <%# * Display the post title (escaped output to prevent XSS) %>
+            
+            <% if (post?.images?.length) { %> <%# * If the post contains at least one image, display the first one %>
+                <img src="<%- post?.images?.[0]?.url %>" alt="Post Image"/> <%# * Safely outputs the image URL stored in MongoDB %>
+            <% } %>
 
             <p><%- post.content %></p>  <%# * Display the post content (escaped for safety) %>
         </div>
