@@ -3,31 +3,386 @@
 <%# ---------------- Include Header Partial ---------------- %>
 <%- include('partials/header', { title , user: user }) %>
 
-<h1> Posts</h1>
+<style>
+   /* All Posts Page Styles */
 
-<% if (posts?.length > 0) { %> <%# * Check if there are any posts to display %>
+.posts-page {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 40px 0;
+}
 
-    <% posts.forEach( post => { %> <%# * Loop through each post in the posts array %>
+.posts-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInDown 0.6s ease-out;
+}
 
-        <div>
-            <h2><%- post.title %></h2> <%# * Display the post title (escaped output to prevent XSS) %>
-            
-            <% if (post?.images?.length) { %> <%# * If the post contains at least one image, display the first one %>
-                <img src="<%- post?.images?.[0]?.url %>" alt="Post Image"/> <%# * Safely outputs the image URL stored in MongoDB %>
-            <% } %>
+.posts-header h1 {
+    font-size: 48px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
 
-            <p><%- post.content %></p>  <%# * Display the post content (escaped for safety) %>
+.posts-count {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.posts-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.post-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.post-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+}
+
+.post-card-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover .post-card-image {
+    transform: scale(1.05);
+}
+
+.post-card-image-wrapper {
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.post-card-image-placeholder {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.post-card-image-placeholder svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0.7;
+}
+
+.post-card-body {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-card-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.post-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.post-date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.post-card-footer {
+    margin-top: auto;
+}
+
+.btn-read-more {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    width: 100%;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-read-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.no-posts {
+    text-align: center;
+    padding: 80px 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.no-posts-icon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 30px;
+    opacity: 0.5;
+}
+
+.no-posts h3 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.no-posts p {
+    color: #6c757d;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.btn-create-post {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px 40px;
+    font-weight: 600;
+    border-radius: 50px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-create-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stagger animation for cards */
+.post-card:nth-child(1) { animation-delay: 0.1s; }
+.post-card:nth-child(2) { animation-delay: 0.2s; }
+.post-card:nth-child(3) { animation-delay: 0.3s; }
+.post-card:nth-child(4) { animation-delay: 0.4s; }
+.post-card:nth-child(5) { animation-delay: 0.5s; }
+.post-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .posts-header h1 {
+        font-size: 38px;
+    }
+    
+    .post-card-title {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .posts-page {
+        padding: 20px 0;
+    }
+    
+    .posts-header {
+        margin-bottom: 30px;
+    }
+    
+    .posts-header h1 {
+        font-size: 32px;
+    }
+    
+    .posts-count {
+        font-size: 16px;
+        padding: 6px 16px;
+    }
+    
+    .post-card-image,
+    .post-card-image-placeholder {
+        height: 200px;
+    }
+    
+    .post-card-body {
+        padding: 20px;
+    }
+    
+    .post-card-title {
+        font-size: 18px;
+    }
+    
+    .no-posts {
+        padding: 60px 20px;
+    }
+    
+    .no-posts h3 {
+        font-size: 24px;
+    }
+    
+    .no-posts p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .posts-header h1 {
+        font-size: 28px;
+    }
+    
+    .post-card-meta {
+        font-size: 13px;
+    }
+    
+    .btn-read-more {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+} 
+</style>
+
+<div class="posts-page">
+  <div class="posts-header">
+    <h1>All Blog Posts</h1>
+    <span class="posts-count"><%= posts.length %> <%= posts.length === 1 ? 'Post' : 'Posts' %></span>
+  </div>
+
+  <div class="container posts-container">
+    <div class="row">
+      <% if (posts.length > 0) { %>
+        <% posts.forEach(post => { %>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="post-card">
+              <div class="post-card-image-wrapper">
+                <% if (post.images && post.images.length > 0) { %>
+                  <img 
+                    src="<%= post?.images[0]?.url %>" 
+                    class="post-card-image" 
+                    alt="<%= post.title %>"
+                    loading="lazy"
+                  />
+                <% } else { %>
+                  <div class="post-card-image-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                    </svg>
+                  </div>
+                <% } %>
+              </div>
+
+              <div class="post-card-body">
+                <h5 class="post-card-title"><%= post.title %></h5>
+                
+                <div class="post-card-meta">
+                  <span class="post-author">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"/>
+                    </svg>
+                    <%= post.author.username %>
+                  </span>
+                  <span class="post-date">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                    </svg>
+                    <%= post.createdAt.toDateString() %>
+                  </span>
+                </div>
+
+                <div class="post-card-footer">
+                  <a href="/posts/<%= post._id %>" class="btn-read-more">Read More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12">
+          <div class="no-posts">
+            <svg class="no-posts-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+              <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2"/>
+            </svg>
+            <h3>No Posts Yet</h3>
+            <p>Be the first to share your thoughts!</p>
+            <a href="/posts/create" class="btn-create-post">Create Your First Post</a>
+          </div>
         </div>
-
-    <% }) %>
-
-<% } else { %>
-
-    <p>No posts found</p>  <%# * Message shown when there are no posts in the database %>
-
-<% } %>
-
+      <% } %>
+    </div>
+  </div>
+</div>
 
 <%# ---------------- Include Footer Partial ---------------- %>
 <%- include('partials/footer') %>
+
 
