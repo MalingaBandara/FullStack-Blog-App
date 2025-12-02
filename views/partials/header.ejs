@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,84 +7,370 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <%# ---------------- Dynamic Page Title ---------------- %>
-    <title><%= title %></title> <!-- Displays the page title passed from the server (e.g., "Login" or "Register") -->
+    <title><%= title %> | Bits of Thought</title>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS (Updated to 5.3) -->
     <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
     
     <!-- FontAwesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link 
+      rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/styles.css" />
 
-    <!--Fonts-->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=Stack+Sans+Notch:wght@200..700&display=swap" rel="stylesheet">
-
+    <style>
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
   <body>
-
     
-<%# ---------------- Navigation Bar ---------------- %>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark nav-dis">
-         
-        <!-- Logo Image -->
-        <a class="navbar-brand d-flex align-items-center" href="/">
-          <img src="/images/logo.png" alt="Bits of Thought Logo" height="50" class="d-inline-block align-top mr-2 rounded-circle " style="object-fit:fill;">
+<style>
+  /* Modern Header/Navigation Styles */
+
+.modern-navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.modern-navbar.scrolled {
+    padding: 10px 0;
+    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.4);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.brand-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-right: 12px;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover .brand-logo {
+    border-color: white;
+    transform: rotate(360deg);
+}
+
+.brand-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: white !important;
+    letter-spacing: 0.5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-toggler {
+    border: 2px solid white;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-nav {
+    align-items: center;
+}
+
+.nav-item {
+    margin: 0 8px;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+    padding: 10px 20px !important;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.nav-link i {
+    font-size: 16px;
+}
+
+/* Special button styles for CTAs */
+.btn-nav-outline {
+    color: white !important;
+    border: 2px solid white !important;
+    background: transparent;
+    padding: 8px 24px !important;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-nav-outline:hover {
+    background: white !important;
+    color: #667eea !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+.btn-nav-primary {
+    background: white !important;
+    color: #667eea !important;
+    border: 2px solid white !important;
+    padding: 8px 24px !important;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-nav-primary:hover {
+    background: #764ba2 !important;
+    color: white !important;
+    border-color: #764ba2 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* User dropdown/profile indicator */
+.user-indicator {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 16px;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.95);
+        margin-top: 15px;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .navbar-nav {
+        align-items: stretch;
+    }
+    
+    .nav-item {
+        margin: 5px 0;
+    }
+    
+    .nav-link {
+        color: #667eea !important;
+        padding: 12px 20px !important;
+        border-radius: 10px;
+        justify-content: flex-start;
+    }
+    
+    .nav-link:hover {
+        background: #f0f0f0;
+    }
+    
+    .btn-nav-outline {
+        color: #667eea !important;
+        border-color: #667eea !important;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .btn-nav-outline:hover {
+        background: #667eea !important;
+        color: white !important;
+    }
+    
+    .btn-nav-primary {
+        justify-content: center;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .brand-text {
+        font-size: 18px;
+    }
+    
+    .brand-logo {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .modern-navbar {
+        padding: 10px 0;
+    }
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Active nav link */
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+}
+
+/* Flash messages container positioning */
+.flash-messages {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 400px;
+}
+
+@media (max-width: 576px) {
+    .flash-messages {
+        top: 70px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+</style>
+
+    <%# ---------------- Modern Navigation Bar ---------------- %>
+    <nav class="navbar navbar-expand-lg modern-navbar" id="mainNav">
+      <div class="container">
+        <!-- Logo and Brand -->
+        <a class="navbar-brand" href="/">
+          <img 
+            src="/images/logo.png" 
+            alt="Bits of Thought Logo" 
+            class="brand-logo"
+          />
           <span class="brand-text">Bits of Thought</span>
         </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <!-- Mobile Toggle Button -->
+        <button 
+          class="navbar-toggler" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#navbarNav" 
+          aria-controls="navbarNav" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+              </a>
+            </li>
 
-          <%# Check if a user is logged in %>
-          <% if (user) { %>
+            <%# Check if a user is logged in %>
+            <% if (user) { %>
+              <%# Links visible when the user is logged in (Private Links) %>
+              <li class="nav-item">
+                <a class="nav-link" href="/posts">
+                  <i class="fas fa-th-list"></i>
+                  <span>Posts</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/posts/add">
+                  <i class="fas fa-plus-circle"></i>
+                  <span>Add Post</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/user/profile">
+                  <i class="fas fa-user"></i>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn-nav-outline" href="/auth/logout">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
 
-          <%# Links visible when the user is logged in (Private Links) %>
-          <li class="nav-item">
-            <a class="nav-link" href="/user/profile"><i class="fas fa-user"></i> Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts/add"><i class="fas fa-plus-circle"></i> Add Post</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts"><i class="fas fa-th-list"></i> Posts</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn btn-outline-light" href="/auth/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-          </li>
-
-
-          <% } else { %>
-          <%# Links visible when no user is logged in (Public Links) %>
-          <li class="nav-item">
-            <a class="nav-link" href="/posts"><i class="fas fa-th-list"></i> Posts</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn btn-outline-light mr-2" href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn btn-success text-white" href="/auth/register"><i class="fas fa-user-plus"></i> Register</a>
-          </li>
-          <% } %>
-
-        </ul>
+            <% } else { %>
+              <%# Links visible when no user is logged in (Public Links) %>
+              <li class="nav-item">
+                <a class="nav-link" href="/posts">
+                  <i class="fas fa-th-list"></i>
+                  <span>Posts</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn-nav-outline" href="/auth/login">
+                  <i class="fas fa-sign-in-alt"></i>
+                  <span>Login</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn-nav-primary" href="/auth/register">
+                  <i class="fas fa-user-plus"></i>
+                  <span>Register</span>
+                </a>
+              </li>
+            <% } %>
+          </ul>
+        </div>
       </div>
-
     </nav>
 
+    <%# ---------------- Flash Messages (if any) ---------------- %>
+    <% if (typeof success !== 'undefined' && success && success.length > 0) { %>
+      <div class="container mt-3">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fas fa-check-circle me-2"></i>
+          <strong>Success!</strong> <%= success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% } %>
 
+    
 
-  </body>
-</html>
+    <%# Main Content Starts Here (body content from other pages will be inserted) %>

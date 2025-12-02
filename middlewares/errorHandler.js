@@ -3,7 +3,7 @@
 const errorHandler = (err, req, res, next) => {
 
     // * Set HTTP status code (use error's status or default to 500 - Server Error)
-    res.status(err.status || 500);
+    res.status(err.status || 500 );
 
     // * Render the custom "error" page and pass necessary data to the view:
     //   - title: Page title
