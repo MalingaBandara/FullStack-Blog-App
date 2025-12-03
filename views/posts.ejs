@@ -324,12 +324,11 @@
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="post-card">
               <div class="post-card-image-wrapper">
+                
                 <% if (post.images && post.images.length > 0) { %>
                   <img 
                     src="<%= post?.images[0]?.url %>" 
-                    class="post-card-image" 
-                    alt="<%= post.title %>"
-                    loading="lazy"
+                    class="post-card-image" alt="<%= post.title %>" loading="lazy" 
                   />
                 <% } else { %>
                   <div class="post-card-image-placeholder">
@@ -338,6 +337,7 @@
                     </svg>
                   </div>
                 <% } %>
+
               </div>
 
               <div class="post-card-body">
