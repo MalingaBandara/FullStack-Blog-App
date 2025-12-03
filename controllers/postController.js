@@ -114,3 +114,23 @@ exports.getPosts = asyncHandler(async (req, res) => {
     });
 
 });
+
+
+
+//! Get Post by ID
+exports.getPostById = asyncHandler(async (req, res) => {
+    
+    // * Find a post by ID
+    // * .populate("author", "username") replaces the author ID with the actual user document
+    // * but only selects the "username" field for efficiency
+    const post = await Post.findById(req.params.id).populate("author", "username");
+
+    // * Render the "post" EJS template
+    // * Pass the page title, post data, and logged-in user details to the view
+    res.render("postDetails", {
+        title: "postDetails",   // * Page title
+        post,            // * The fetched post
+        user: req.user,  // * Current logged-in user (if any)
+    });
+
+});
