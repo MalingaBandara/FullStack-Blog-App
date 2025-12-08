@@ -4,29 +4,36 @@
 
 
 <h1>
-    <%= post?.title  %>
-</h1>
+    <%= post?.title %>
+</h1> <%# * Display the post title (unescaped because title is trusted text) %>
 
 
-<p> <%= post?.content  %> </p>
+
+<p> <%= post?.content %> </p> <%# * Display the post content (also unescaped, used for plain text content) %>
+
 
 
 <!-- Images -->
-<% post?.images?.forEach( ( image )=> { %>
+<% post?.images?.forEach((image) => { %>
+    <%# * Loop through all images attached to the post %>
 
     <div>
-        <img src="<%= image.url %>" alt="" />
+        <img src="<%= image.url %>" alt="" /> <%# * Display each image using its stored URL from Cloudinary/MongoDB %>
     </div>
 
-<% } ) %>
-
+<% }) %>
 
 
 <!-- Action Buttons-->
-<% if( user?._id?.toString() == post?.author?._id?.toString() ){ %>
+<% if (user?._id?.toString() == post?.author?._id?.toString()) { %>
+    <%# * Show Edit/Delete buttons ONLY if the logged-in user is the author of the post
+        * .toString() is used because MongoDB ObjectIDs need string comparison
+    %>
+
     <div>
-        <a href="/post/<%= post?._id  %>/delete" class="btn btn-danger">Delete</a>
-        <a href="/post/<%= post?._id  %>/edit" class="btn btn-primary">Edit</a>
+        <a href="/post/<%= post?._id %>/delete" class="btn btn-danger">Delete</a> <%# * Link to delete the post %>
+
+        <a href="/post/<%= post?._id %>/edit" class="btn btn-primary">Edit</a> <%# * Link to edit the post %>
     </div>
 <% } %>
 
