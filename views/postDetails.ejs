@@ -3,7 +3,33 @@
 <%- include('partials/header', { title , user: user }) %>
 
 
-<h1>Post Details</h1>
+<h1>
+    <%= post?.title  %>
+</h1>
+
+
+<p> <%= post?.content  %> </p>
+
+
+<!-- Images -->
+<% post?.images?.forEach( ( image )=> { %>
+
+    <div>
+        <img src="<%= image.url %>" alt="" />
+    </div>
+
+<% } ) %>
+
+
+
+<!-- Action Buttons-->
+<% if( user?._id?.toString() == post?.author?._id?.toString() ){ %>
+    <div>
+        <a href="/post/<%= post?._id  %>/delete" class="btn btn-danger">Delete</a>
+        <a href="/post/<%= post?._id  %>/edit" class="btn btn-primary">Edit</a>
+    </div>
+<% } %>
+
 
 
 
