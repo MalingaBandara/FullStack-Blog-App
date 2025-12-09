@@ -92,6 +92,9 @@ app.get( "/", (req, res) => {
 const postRoutes = require('./routes/postRoutes');
 app.use( "/posts", postRoutes );
 
+// * Comment Routes *
+const commentRoutes = require('./routes/commentRoutes');
+app.use( "/", commentRoutes );
 
 
 // * Import the global error-handling middleware
