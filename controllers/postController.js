@@ -6,6 +6,7 @@ const File = require("../models/File");
 
 // * asyncHandler: wraps async route functions and automatically forwards errors to Express, so we don’t need try/catch blocks.
 const asyncHandler = require("express-async-handler");
+const { model } = require("mongoose");
 
 
 //* Rendering post form
@@ -120,10 +121,21 @@ exports.getPosts = asyncHandler(async (req, res) => {
 //! Get Post by ID
 exports.getPostById = asyncHandler(async (req, res) => {
     
-    // * Find a post by ID
-    // * .populate("author", "username") replaces the author ID with the actual user document
-    // * but only selects the "username" field for efficiency
-    const post = await Post.findById(req.params.id).populate("author", "username");
+    // * Fetch a single post by its MongoDB ID from the route parameter
+    // * First populate the 'author' field with only the username
+    // * Then populate the 'comments' array, and inside each comment,
+    // * populate the 'author' field with the username of the commenter
+    const post = await Post.findById(req.params.id)
+        .populate("author", "username")   // * Populate post author
+        .populate({
+            path: "comments",             // * Populate all comments of this post
+            populate: {
+                path: "author",           // * Inside each comment → populate comment's author
+                model: "User",            // * Model used for comment author
+                select: "username"        // * Select only the username
+            }
+        });
+    
 
     // * Render the "post" EJS template
     // * Pass the page title, post data, and logged-in user details to the view

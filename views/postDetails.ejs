@@ -473,6 +473,22 @@
         </form>
       </div>
 
+
+      <!--  Comments List -->
+      <% if( post?.comments?.length > 0 ) { %>
+
+        <% post?.comments?.forEach(( comment )=> { %>
+          <div>
+            <small><%= comment?.author?.username %></small>
+            <p><%= comment?.content %></p>
+          </div>
+        <% } ) %>
+
+      
+      <% } else { %>
+        <p>No comments yet.</p>
+      <% } %>
+
       
     </div>
 
