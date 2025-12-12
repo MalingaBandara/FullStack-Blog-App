@@ -34,8 +34,6 @@ exports.addComment = asyncHandler(async (req, res) => {
     post.comments.push(comment._id); // * Add the comment ID to the post's comments array
     await post.save(); // * Save the updated post
 
-    console.log(post); // * Log the updated post object (for debugging purposes)
-
     // * Redirect user back to the post details page after adding comment
     res.redirect(`/posts/${postId}`);
 

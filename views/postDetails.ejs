@@ -2,7 +2,7 @@
 <%# ---------------- Include Header Partial ---------------- %>
 <%- include('partials/header', { title, user: user }) %>
 
-<style>
+<!--<style>
 
 /* Post Details Page Styles */
 .post-detail-page {
@@ -372,6 +372,699 @@
     }
 }
 </style>
+-->
+
+<style>
+  /* Post Details Page Styles */
+
+.post-detail-page {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 60px 0;
+}
+
+.post-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.post-detail-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Post Header */
+.post-detail-header {
+    padding: 50px 50px 30px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.post-detail-title {
+    font-size: 42px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 25px;
+    line-height: 1.3;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.post-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    color: #6c757d;
+    font-size: 15px;
+}
+
+.post-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.post-meta-item i {
+    color: #667eea;
+    font-size: 16px;
+}
+
+.post-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.post-author-name {
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* Post Content */
+.post-detail-content {
+    padding: 40px 50px;
+    font-size: 18px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.post-detail-content p {
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Post Images */
+.post-detail-images {
+    padding: 0 50px 40px;
+}
+
+.post-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.post-image-wrapper {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.post-image-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+}
+
+.post-detail-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Single image should be larger */
+.post-images-grid.single-image .post-detail-image {
+    height: 500px;
+}
+
+/* Actions Section */
+.post-detail-actions {
+    padding: 30px 50px;
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.post-actions-left {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-post-action {
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.btn-delete {
+    background: white;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+
+.btn-delete:hover {
+    background: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+}
+
+.btn-back {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.btn-back:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Back to Posts Link */
+.back-to-posts {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.back-to-posts:hover {
+    color: #764ba2;
+    transform: translateX(-5px);
+}
+
+.back-to-posts i {
+    font-size: 18px;
+}
+
+/* Image Lightbox Modal */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    animation: fadeIn 0.3s ease;
+}
+
+.image-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content-wrapper {
+    max-width: 90%;
+    max-height: 90%;
+    position: relative;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.modal-close {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.modal-close:hover {
+    transform: scale(1.2);
+}
+
+/* No Images Message */
+.no-images {
+    padding: 40px;
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Comments Section */
+.post-comments-section {
+    padding: 40px 50px;
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.comments-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.comments-header h3 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.comments-count {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Comment Form */
+.comment-form {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.comment-form-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.comment-user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.comment-form-info p {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+}
+
+.comment-form-info span {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.comment-textarea-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 120px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.comment-textarea::placeholder {
+    color: #999;
+}
+
+.comment-char-count {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 12px;
+    color: #999;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.comment-form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-form-hint {
+    font-size: 13px;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comment-form-hint i {
+    color: #667eea;
+}
+
+.btn-comment-submit {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-comment-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-comment-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Comments List */
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.comment-item {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.comment-item:hover {
+    box-shadow: 0 5px 25px rgba(102, 126, 234, 0.15);
+    transform: translateX(5px);
+}
+
+.comment-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.comment-info {
+    flex: 1;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.comment-date {
+    font-size: 13px;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comment-date i {
+    font-size: 12px;
+}
+
+.comment-content {
+    color: #555;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding-left: 55px;
+}
+
+.no-comments {
+    background: white;
+    padding: 60px 30px;
+    border-radius: 15px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.no-comments i {
+    font-size: 50px;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.no-comments p {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Login to Comment */
+.login-to-comment {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.login-to-comment i {
+    font-size: 50px;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+.login-to-comment p {
+    color: #6c757d;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.btn-login-comment {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-login-comment:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .post-comments-section {
+        padding: 30px 25px;
+    }
+    
+    .comment-form,
+    .comment-item {
+        padding: 20px;
+    }
+    
+    .comments-header h3 {
+        font-size: 24px;
+    }
+    
+    .comment-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-comment-submit {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .comment-content {
+        padding-left: 0;
+        margin-top: 15px;
+    }
+    
+    .comment-form-hint {
+        text-align: center;
+    }
+    
+    .post-detail-page {
+        padding: 30px 0;
+    }
+    
+    .post-detail-header,
+    .post-detail-content,
+    .post-detail-images {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+    
+    .post-detail-actions {
+        padding: 20px 25px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .post-actions-left {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-post-action {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .post-detail-title {
+        font-size: 32px;
+    }
+    
+    .post-detail-content {
+        font-size: 16px;
+    }
+    
+    .post-detail-meta {
+        gap: 15px;
+        font-size: 14px;
+    }
+    
+    .post-images-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .post-detail-image {
+        height: 250px;
+    }
+    
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .post-detail-header {
+        padding-top: 30px;
+    }
+    
+    .post-detail-title {
+        font-size: 26px;
+    }
+    
+    .post-detail-content {
+        font-size: 15px;
+        padding: 30px 20px;
+    }
+    
+    .post-detail-image {
+        height: 200px;
+    }
+}
+</style>
 
 
 <div class="post-detail-page">
@@ -464,43 +1157,95 @@
       </div>
 
 
-      <!-- Post Comments -->
-      <div>
-        <h3>Comments</h3>
+      <!-- Post Comments Section -->
+      <div class="post-comments-section">
+        <div class="comments-header">
+          <h3>Comments</h3>
+          <span class="comments-count"><%= post?.comments?.length || 0 %></span>
+        </div>
 
-        <!-- Check if user is logged in -->
+        <!-- Comment Form (Only show if user is logged in) -->
         <% if (user) { %>
 
-          <form action="/posts/<%= post?._id %>/comments" method="post">
-            <textarea name="content" id="commentText" rows="5" placeholder="Add Comment" required ></textarea> 
-            <input type="submit" value="Comment" />
+          <form class="comment-form" action="/posts/<%= post?._id %>/comments" method="POST">
+            <div class="comment-form-header">
+              <div class="comment-user-avatar">
+                <%= user?.username?.charAt(0).toUpperCase() %>
+              </div>
+              <div class="comment-form-info">
+                <p><%= user?.username %></p>
+                <span>Share your thoughts...</span>
+              </div>
+            </div>
+
+            <div class="comment-textarea-wrapper">
+              <textarea name="content" id="commentText" class="comment-textarea" placeholder="Write your comment here... (Max 500 characters)" required
+                maxlength="500"oninput="updateCharCount()"></textarea>
+              <span class="comment-char-count" id="charCount">0 / 500</span>
+            </div>
+
+            <div class="comment-form-actions">
+              <div class="comment-form-hint">
+                <i class="fas fa-info-circle"></i>
+                <span>Be respectful and constructive</span>
+              </div>
+              <button type="submit" class="btn-comment-submit" id="submitBtn">
+                <i class="fas fa-paper-plane"></i>
+                <span>Post Comment</span>
+              </button>
+            </div>
           </form>
 
         <% } else { %>
-          <p>Please <a href="/auth/login">login</a> to a comment</p>
+          <!-- Login Prompt -->
+          <div class="login-to-comment">
+            <i class="fas fa-comments"></i>
+            <p>You need to be logged in to leave a comment</p>
+            <a href="/auth/login" class="btn-login-comment">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Login to Comment</span>
+            </a>
+          </div>
+        <% } %>
+
+        <!-- Comments List -->
+        <% if (post?.comments && post?.comments?.length > 0) { %>
+
+          <div class="comments-list">
+            <% post?.comments?.forEach(comment => { %>
+              <div class="comment-item">
+                <div class="comment-header">
+                  <div class="comment-avatar">
+                    <%= comment?.author?.username?.charAt(0).toUpperCase() %>
+                  </div>
+                  <div class="comment-info">
+                    <div class="comment-author">
+                      <%= comment?.author?.username %>
+                    </div>
+                    <div class="comment-date">
+                      <i class="far fa-clock"></i>
+                      <span><%= comment?.createdAt?.toDateString() %></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="comment-content">
+                  <%= comment?.content %>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+
+        <% } else { %>
+          <!-- No Comments Yet -->
+          <div class="no-comments">
+            <i class="far fa-comments"></i>
+            <p>No comments yet. Be the first to share your thoughts!</p>
+          </div>
         <% } %>
 
       </div>
 
-
-      <!--  Comments List -->
-      <% if( post?.comments?.length > 0 ) { %>
-
-        <% post?.comments?.forEach(( comment )=> { %>
-          <div>
-            <small><%= comment?.author?.username %></small>
-            <p><%= comment?.content %></p>
-          </div>
-        <% } ) %>
-
-      
-      <% } else { %>
-        <p>No comments yet.</p>
-      <% } %>
-
-      
     </div>
-
   </div>
 </div>
 
