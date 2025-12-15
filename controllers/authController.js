@@ -100,7 +100,7 @@ exports.register = asyncHandler( async (req, res) => {
     });
 
     // After successful registration, redirect the user to the login page
-    res.redirect('auth/login');
+    res.redirect('/auth/login');
 
   } catch (error) {
     
