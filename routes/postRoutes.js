@@ -1,10 +1,13 @@
 const express = require("express");
+
 const {
   getPostForm,
   createPost,
   getPosts,
   getPostById,
+  getEditPostForm,
 } = require("../controllers/postController");
+
 const postRoutes = express.Router();
 
 const upload = require("../config/multer"); // * Import the Multer upload configuration (handles image uploads to Cloudinary)
@@ -33,5 +36,8 @@ postRoutes.get("/", getPosts);
 
 //? Get post by ID
 postRoutes.get("/:id", getPostById);
+
+//? Get Edit Post Form 
+postRoutes.get("/:id/edit", getEditPostForm);
 
 module.exports = postRoutes;

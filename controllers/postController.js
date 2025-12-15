@@ -146,3 +146,32 @@ exports.getPostById = asyncHandler(async (req, res) => {
     });
 
 });
+
+
+
+//* Get Edit Post Form
+exports.getEditPostForm = asyncHandler(async (req, res) => {
+
+     // * Retrieve the post from MongoDB using the ID from the URL parameters
+    const post = await Post.findById(req.params.id);
+
+    // * If no post is found, render the post details page with an error message
+    if (!post) {
+        return res.render("postDetails", {
+            title: "Post",          // * Page title
+            post,                   // * Will be undefined or null
+            user: req.user,         // * Logged-in user (if any)
+            error: "Post not found" // * Error message displayed to the user
+        });
+    }
+
+    // * Render the edit post form
+    // * Pass the post data to pre-fill the form fields
+    // * Pass the logged-in user for authorization logic in the view
+    res.render("editPost", {
+        title: "Edit Post", // * Page title
+        post,               // * Post data to edit
+        user: req.user,     // * Current logged-in user
+    });
+
+});

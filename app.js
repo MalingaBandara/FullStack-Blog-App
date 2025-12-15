@@ -29,8 +29,6 @@ const passportConfig = require('./config/passport');
 
 
 
-
-
 // ---------------- Server Configuration ----------------
 const PORT = process.env.PORT || 3000;  // Use PORT from .env or default to 3000
 
@@ -56,6 +54,13 @@ app.use(
   })
 );
 
+
+//* -------- Method override middleware — allows PUT and DELETE requests from forms ------------
+const methodOverride = require('method-override');
+// Register method-override middleware in Express
+// It looks for a query parameter named "_method"
+// Example: <form method="POST" action="/post/123?_method=DELETE">
+app.use(methodOverride("_method"));
 
 
 

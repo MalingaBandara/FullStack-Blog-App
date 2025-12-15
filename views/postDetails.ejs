@@ -1257,11 +1257,11 @@
         
         <% if (user?._id?.toString() === post?.author?._id?.toString()) { %>
           <div class="post-actions-left">
-            <a href="/post/<%= post?._id %>/edit" class="btn-post-action btn-edit">
+            <a href="/posts/<%= post?._id %>/edit" class="btn-post-action btn-edit">
               <i class="fas fa-edit"></i>
               <span>Edit Post</span>
             </a>
-            <a href="/post/<%= post?._id %>/delete" class="btn-post-action btn-delete"
+            <a href="/posts/<%= post?._id %>/delete" class="btn-post-action btn-delete"
               onclick="return confirm('Are you sure you want to delete this post? This action cannot be undone.')"
             >
               <i class="fas fa-trash-alt"></i>
