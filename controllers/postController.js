@@ -4,6 +4,8 @@ const { url } = require("../config/cloudinary");
 const Post = require("../models/Post");
 const File = require("../models/File");
 
+const cloudinary = require("../config/cloudinary");
+
 // * asyncHandler: wraps async route functions and automatically forwards errors to Express, so we don’t need try/catch blocks.
 const asyncHandler = require("express-async-handler");
 const { model } = require("mongoose");
@@ -173,5 +175,78 @@ exports.getEditPostForm = asyncHandler(async (req, res) => {
         post,               // * Post data to edit
         user: req.user,     // * Current logged-in user
     });
+
+});
+
+
+
+//! Update Post
+exports.updatePost = asyncHandler(async (req, res) => {
+
+    const { title, content } = req.body;// * Extract updated title and content from the request body
+
+    const post = await Post.findById(req.params.id); // * Find the post by its ID from route parameters
+
+    // * If the post does not exist, render post details page with an error
+    if (!post) {
+        return res.render("postDetails", {
+            title: "Post",          // * Page title
+            post,                   // * Will be null or undefined
+            user: req.user,         // * Logged-in user
+            error: "Post not found" // * Error message for UI
+        });
+    }
+
+    // * Authorization check: only the post author can edit (ObjectIds converted to strings for comparison)
+    if (post.author.toString() !== req.user._id.toString()) {
+        return res.render("postDetails", {
+            title: "Post",                             // * Page title
+            post,                                      // * Current post
+            user: req.user,                        
+            error: "You are not authorized to edit this post" // * Error shown when user tries to edit someone else's post
+            
+        });
+    }
+
+    // * Update post fields only if new values are provided
+    post.title = title || post.title;
+    post.content = content || post.content;
+
+    // * Check if new images were uploaded
+    if (req.files && req.files.length > 0) {
+
+        // * If post already has images, delete them from Cloudinary
+        if (post.images && post.images.length > 0) {
+            await Promise.all(
+                post.images.map(async (image) => {
+                    await cloudinary.uploader.destroy(image.public_id);// * Remove each old image using its Cloudinary public ID
+                })
+            );
+        }
+
+        // * Upload new images and store their references
+        post.images = await Promise.all(
+            req.files.map(async (file) => {
+
+                // * Create a new File document for each uploaded image
+                const newFile = new File({
+                    url: file.path,             // * Cloudinary image URL
+                    public_id: file.filename,   // * Cloudinary public ID
+                    uploaded_by: req.user._id   // * User who uploaded the image
+                });
+
+                await newFile.save();// * Save image metadata in MongoDB
+
+                // * Return required image data to store inside Post document
+                return { url: newFile.url, public_id: newFile.public_id };
+            })
+        );
+    }
+
+    // * Save the updated post in MongoDB
+    await post.save();
+
+    // * Redirect user back to the updated post details page
+    res.redirect(`/posts/${post._id}`);
 
 });
