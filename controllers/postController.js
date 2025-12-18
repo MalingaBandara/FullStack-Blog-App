@@ -3,12 +3,14 @@
 const { url } = require("../config/cloudinary");
 const Post = require("../models/Post");
 const File = require("../models/File");
+const Comment = require("../models/Comment");
 
 const cloudinary = require("../config/cloudinary");
 
 // * asyncHandler: wraps async route functions and automatically forwards errors to Express, so we don’t need try/catch blocks.
 const asyncHandler = require("express-async-handler");
 const { model } = require("mongoose");
+const { use } = require("passport");
 
 
 //* Rendering post form
@@ -222,7 +224,10 @@ exports.updatePost = asyncHandler(async (req, res) => {
                     await cloudinary.uploader.destroy(image.public_id);// * Remove each old image using its Cloudinary public ID
                 })
             );
+        await File.deleteMany({ uploaded_by: post.author }); // * DELETE POST FILES (MongoDB)
         }
+
+         
 
         // * Upload new images and store their references
         post.images = await Promise.all(
@@ -248,5 +253,54 @@ exports.updatePost = asyncHandler(async (req, res) => {
 
     // * Redirect user back to the updated post details page
     res.redirect(`/posts/${post._id}`);
+
+});
+
+
+
+//! Delete Post
+exports.deletePost = asyncHandler(async (req, res) => {
+
+    const post = await Post.findById(req.params.id);// * Find the post by its ID from route parameters
+
+    // * If the post does not exist, render post details page with an error
+    if (!post) {
+        return res.render("postDetails", {
+            title: "Post",            // * Page title
+            post,                     // * Will be null or undefined
+            user: req.user,           // * Logged-in user
+            error: "Post not found"   // * Error message for UI
+        });
+    }
+
+    // * Authorization check: only the post author can delete (ObjectIds compared as strings)
+    if (post.author.toString() !== req.user._id.toString()) {
+        return res.render("postDetails", {
+            title: "Post",                                   // * Page title
+            post,                                            // * Current post
+            user: req.user,                                  // * Logged-in user
+            error: "You are not authorized to delete this post"// * Shown when user tries to delete someone else’s post
+        });
+    }
+
+    // * Delete all images related to this post from Cloudinary
+    if (post.images && post.images.length > 0) {
+        await Promise.all(
+            post.images.map(async (image) => {
+                await cloudinary.uploader.destroy(image.public_id);// * Remove each image using its Cloudinary public ID
+            })
+        );
+    }
+
+    // 🔥 Delete all comments related to this post from MongoDB
+    await Comment.deleteMany({ post: post._id }); // * Removes every comment associated with this post
+    
+    // 🔥 Delete all uploaded file records related to the post author
+    await File.deleteMany({ uploaded_by: post.author }); // * Cleans up file metadata linked to the post author
+
+    await Post.findByIdAndDelete(req.params.id); // * Finally, delete the post itself from MongoDB
+
+
+    res.redirect("/posts"); // * Redirect user back to the posts list page after deletion
 
 });

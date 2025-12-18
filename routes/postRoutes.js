@@ -7,6 +7,7 @@ const {
   getPostById,
   getEditPostForm,
   updatePost,
+  deletePost,
 } = require("../controllers/postController");
 
 const postRoutes = express.Router();
@@ -43,5 +44,8 @@ postRoutes.get("/:id/edit", getEditPostForm);
 
 //? Update Post
 postRoutes.put( "/:id", ensureAuthenticated, upload.array("image", 5), updatePost );
+
+//? Delete Post
+postRoutes.delete("/:id", ensureAuthenticated, deletePost);
 
 module.exports = postRoutes;
