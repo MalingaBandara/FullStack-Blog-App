@@ -41,4 +41,40 @@ exports.addComment = asyncHandler(async (req, res) => {
 
 
 
-//!
+//! Update Comment
+exports.updateComment = asyncHandler(async (req, res) => {
+
+    // * Extract updated comment content from the request body
+    const { content } = req.body;
+
+    // * Find the comment in the database using the ID from route parameters
+    const comment = await Comment.findById(req.params.id);
+
+    // * If the comment does not exist, render the post details page with an error
+    if (!comment) {
+        return res.render("postDetails", { 
+            title: "Post",          // * Page title
+            comment,                // * Will be null or undefined
+            user: req.user,         // * Logged-in user
+            error: "Comment not found"
+        });
+    }
+
+    // * Authorization check: only the comment author can edit (ObjectIds compared as strings)
+    if (comment.author.toString() !== req.user._id.toString()) {
+        return res.render("postDetails", {
+            title: "Post",                                     // * Page title
+            comment,                                           // * Current comment
+            user: req.user,                                    // * Logged-in user
+            error: "You are not authorized to edit this comment"
+            // * Shown when user tries to edit someone else’s comment
+        });
+    }
+
+    comment.content = content || comment.content; // * Update comment content only if a new value is provided
+
+    await comment.save(); // * Save the updated comment in MongoDB
+    
+    res.redirect(`/posts/${comment.post}`); // * Redirect user back to the related post details page
+
+});
