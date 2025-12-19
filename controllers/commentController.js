@@ -78,3 +78,37 @@ exports.updateComment = asyncHandler(async (req, res) => {
     res.redirect(`/posts/${comment.post}`); // * Redirect user back to the related post details page
 
 });
+
+
+
+//! Delete Comment
+exports.deleteComment = asyncHandler(async (req, res) => {
+
+    // * Find the comment in the database using the ID from route parameters
+    const comment = await Comment.findById(req.params.id);
+
+    // * If the comment does not exist, render the post details page with an error
+    if (!comment) {
+        return res.render("postDetails", { 
+            title: "Post",          // * Page title
+            comment,                // * Will be null or undefined
+            user: req.user,         // * Logged-in user
+            error: "Comment not found"
+        });
+    }
+
+    // * Authorization check: only the comment author can delete (ObjectIds compared as strings)
+    if (comment.author.toString() !== req.user._id.toString()) {
+        return res.render("postDetails", {
+            title: "Post",                                     // * Page title
+            comment,                                           // * Current comment
+            user: req.user,                                    // * Logged-in user
+            error: "You are not authorized to delete this comment" // * Shown when user tries to delete someone else’s comment
+        });
+    }
+
+    await Comment.findByIdAndDelete(req.params.id); // * Delete the comment from MongoDB
+
+    res.redirect(`/posts/${comment.post}`); // * Redirect user back to the related post details page
+
+});

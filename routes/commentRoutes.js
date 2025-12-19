@@ -2,7 +2,7 @@
 const express = require("express"); // * Import Express framework
 const commentRoutes = express.Router(); // * Create a new router for comment-related routes
 const { ensureAuthenticated } = require("../middlewares/auth"); // * Import middleware to check if user is logged in
-const { addComment, updateComment } = require("../controllers/commentController"); // * Import controller function to handle adding a comment
+const { addComment, updateComment, deleteComment } = require("../controllers/commentController"); // * Import controller function to handle adding a comment
 
 
 //! Route to Add Comment
@@ -13,6 +13,9 @@ commentRoutes.post('/posts/:id/comments', ensureAuthenticated, addComment);
 
 //! Update Comment
 commentRoutes.put( '/comment/:id', ensureAuthenticated, updateComment );
+
+//! Delete Comment
+commentRoutes.delete( '/comment/:id', ensureAuthenticated, deleteComment );
 
 
 // * Export the comment router to be used in main app
