@@ -2,6 +2,7 @@
 const asyncHandler = require("express-async-handler"); // * Import express-async-handler to handle async errors without try/catch
 const Comment = require("../models/Comment"); // * Import Comment model from MongoDB
 const Post = require("../models/Post"); // * Import Post model from MongoDB
+const User = require("../models/User");
 
 
 //! Add Comment to a Post
@@ -106,6 +107,18 @@ exports.deleteComment = asyncHandler(async (req, res) => {
             error: "You are not authorized to delete this comment" // * Shown when user tries to delete someone else’s comment
         });
     }
+
+     //! REMOVE COMMENT ID FROM POST
+    await Post.findByIdAndUpdate(
+        comment.post,
+        { $pull: { comments: comment._id } }
+    );
+
+    //! REMOVE COMMENT ID FROM USER
+    await User.findByIdAndUpdate(
+        comment.author,
+        { $pull: { comments: comment._id } }
+    );
 
     await Comment.findByIdAndDelete(req.params.id); // * Delete the comment from MongoDB
 

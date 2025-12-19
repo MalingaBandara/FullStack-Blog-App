@@ -22,6 +22,8 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
     // * Fetch all posts created by this user
     const posts = await Post.find( { author: user._id } ).sort({ createdAt : -1, });// * Sort posts by newest first using createdAt field
 
+    console.log( posts, user);
+    
     
     // * Render the profile page
     // * Send user info, user's posts, and total post count to the view
