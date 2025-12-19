@@ -85,8 +85,8 @@ app.use(passport.session());
 //! ---------------- Routes ----------------
 
 // * Auth Routes *
-const userRoutes = require('./routes/authRoutes');
-app.use( "/auth", userRoutes );
+const authRoutes = require('./routes/authRoutes');
+app.use( "/auth", authRoutes );
 
 // * Home Route *
 app.get( "/", (req, res) => {
@@ -100,6 +100,10 @@ app.use( "/posts", postRoutes );
 // * Comment Routes *
 const commentRoutes = require('./routes/commentRoutes');
 app.use( "/", commentRoutes );
+
+// * User (Profile) Routes *
+const userRoutes = require('./routes/userRoutes');
+app.use( "/user", userRoutes );
 
 
 // * Import the global error-handling middleware

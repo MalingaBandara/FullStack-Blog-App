@@ -48,8 +48,8 @@ exports.login = asyncHandler ( async (req, res, next) => {
         return next(err); // Forward login error if occurs
       }
 
-      // 🔹 On successful login, redirect to home page
-      return res.redirect("/");
+      // 🔹 On successful login, redirect to Profile page
+      return res.redirect("/user/profile");
     });
 
   })(req, res, next); // * Immediately invoke the authenticate middleware with req, res, next
