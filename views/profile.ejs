@@ -2,9 +2,16 @@
 <%- include('partials/header', { title: 'Profile', user: user }) %>
 
 
-
 <h1> User Profile </h1>
 
+
+<% if ( user?.profilePicture && user?.profilePicture?.url ) { %> <%# * Check if the user has an uploaded profile picture with a valid URL %>
+
+    <img src="<%= user.profilePicture.url %>" alt="<%= user.username %>" width="300" height="300" />
+
+<% } else { %><%# * Display a default profile image if user has no profile picture %>
+    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="<%= user.username %>" width="300" height="300" />
+<% } %>
 
 
 

@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema(
     // Profile picture (string for URL, public_id if stored on Cloudinary or similar)
     profilePicture: {
       type: String,     // profile image URL
-      public_id: String // optional: image reference ID (e.g., from Cloudinary)
+      public_id: String, // optional: image reference ID (e.g., from Cloudinary)
+      url: String        // image URL
     },
 
     // Short bio or description about the user
