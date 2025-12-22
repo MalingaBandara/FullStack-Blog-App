@@ -1,58 +1,602 @@
 <%# ---------------- Include Header Partial ---------------- %>
 <%- include('partials/header', { title: 'Profile', user: user }) %>
 
+<style>
 
-<h1> User Profile </h1>
+/* User Profile Page Styles */
+.profile-page {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 60px 0;
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Profile Header Card */
+.profile-header-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 30px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.profile-cover {
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+}
+
+.profile-cover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23ffffff"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%23ffffff"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23ffffff"/></svg>') center bottom no-repeat;
+    background-size: cover;
+    opacity: 0.1;
+}
+
+.profile-info-section {
+    padding: 0 50px 40px;
+    position: relative;
+    margin-top: -80px;
+}
+
+.profile-avatar-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 6px solid white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    background: white;
+}
+
+.profile-main-info {
+    flex: 1;
+    padding-bottom: 10px;
+}
+
+.profile-username {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-username i {
+    color: #667eea;
+    font-size: 24px;
+}
+
+.profile-email {
+    font-size: 18px;
+    color: #6c757d;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-email i {
+    color: #667eea;
+}
+
+.profile-joined {
+    font-size: 15px;
+    color: #999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-joined i {
+    color: #667eea;
+}
+
+/* Profile Stats */
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.stat-number {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.stat-label {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+/* Profile Actions */
+.profile-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-profile-action {
+    flex: 1;
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit-profile {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-edit-profile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.btn-delete-account {
+    background: white;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+}
+
+.btn-delete-account:hover {
+    background: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+}
+
+/* User Posts Section */
+.user-posts-section {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.posts-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.posts-section-header h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.posts-section-header h2 i {
+    color: #667eea;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.user-post-card {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.user-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+}
+
+.user-post-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.user-post-image-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-post-image-placeholder i {
+    font-size: 50px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.user-post-content {
+    padding: 20px;
+}
+
+.user-post-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 12px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.user-post-excerpt {
+    font-size: 15px;
+    color: #6c757d;
+    margin: 0 0 15px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+.user-post-date {
+    font-size: 13px;
+    color: #999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-post-date i {
+    color: #667eea;
+}
+
+/* No Posts Message */
+.no-posts-message {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.no-posts-message i {
+    font-size: 80px;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.no-posts-message h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.no-posts-message p {
+    color: #6c757d;
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+.btn-create-first-post {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 35px;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-create-first-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .posts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-page {
+        padding: 30px 0;
+    }
+    
+    .profile-cover {
+        height: 150px;
+    }
+    
+    .profile-info-section {
+        padding: 0 25px 30px;
+        margin-top: -60px;
+    }
+    
+    .profile-avatar-wrapper {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .profile-username {
+        font-size: 28px;
+        justify-content: center;
+    }
+    
+    .profile-email,
+    .profile-joined {
+        justify-content: center;
+    }
+    
+    .profile-stats {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .profile-actions {
+        flex-direction: column;
+    }
+    
+    .user-posts-section {
+        padding: 25px;
+    }
+    
+    .posts-section-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .posts-section-header h2 {
+        font-size: 24px;
+    }
+    
+    .posts-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-username {
+        font-size: 24px;
+    }
+    
+    .profile-email {
+        font-size: 16px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-number {
+        font-size: 28px;
+    }
+}
+</style>
 
 
-<% if ( user?.profilePicture && user?.profilePicture?.url ) { %> <%# * Check if the user has an uploaded profile picture with a valid URL %>
+<div class="profile-page">
+  <div class="profile-container">
+    
+    <!-- Profile Header Card -->
+    <div class="profile-header-card">
+      <!-- Cover Photo -->
+      <div class="profile-cover"></div>
+      
+      <!-- Profile Info Section -->
+      <div class="profile-info-section">
+        <div class="profile-avatar-wrapper">
+          <!-- Profile Picture -->
+          <% if (user?.profilePicture && user?.profilePicture?.url) { %>
+            <img 
+              src="<%= user.profilePicture.url %>" alt="<%= user.username %>" class="profile-avatar" />
+          <% } else { %>
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" 
+              alt="<%= user.username %>" class="profile-avatar"/>
+          <% } %>
+          
+          <!-- Main Info -->
+          <div class="profile-main-info">
+            <h1 class="profile-username">
+              <i class="fas fa-user-circle"></i>
+              <%= user.username %>
+            </h1>
+            <p class="profile-email">
+              <i class="fas fa-envelope"></i>
+              <%= user.email %>
+            </p>
+            <p class="profile-joined">
+              <i class="fas fa-calendar-check"></i>
+              Member since <%= user.createdAt.toDateString() %>
+            </p>
+          </div>
+        </div>
 
-    <img src="<%= user.profilePicture.url %>" alt="<%= user.username %>" width="300" height="300" />
+        <!-- Profile Stats -->
+        <div class="profile-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <p class="stat-number"><%= postCount %></p>
+            <p class="stat-label">Total Posts</p>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <p class="stat-number">
+              <%= posts.reduce((sum, post) => sum + (post.comments?.length || 0), 0) %>
+            </p>
+            <p class="stat-label">Total Comments</p>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-images"></i>
+            </div>
+            <p class="stat-number">
+              <%= posts.reduce((sum, post) => sum + (post.images?.length || 0), 0) %>
+            </p>
+            <p class="stat-label">Total Images</p>
+          </div>
+        </div>
 
-<% } else { %><%# * Display a default profile image if user has no profile picture %>
-    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="<%= user.username %>" width="300" height="300" />
-<% } %>
+        <!-- Profile Actions -->
+        <div class="profile-actions">
+          <a href="/user/edit" class="btn-profile-action btn-edit-profile">
+            <i class="fas fa-user-edit"></i>
+            <span>Edit Profile</span>
+          </a>
+          <form action="/user/delete" method="POST" style="flex: 1; margin: 0;">
+            <button 
+              type="submit" 
+              class="btn-profile-action btn-delete-account"
+              onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone and all your posts will be deleted.')"
+              style="width: 100%;"
+            >
+              <i class="fas fa-trash-alt"></i>
+              <span>Delete Account</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
 
+    <!-- User Posts Section -->
+    <div class="user-posts-section">
+      <div class="posts-section-header">
+        <h2>
+          <i class="fas fa-th-large"></i>
+          My Posts
+        </h2>
+      </div>
 
-<h2><%= user.username %></h2>
-<h3><%= user.email %></h3>
-<p>
-    Date Joined: <%= user.createdAt.toDateString() %>
-    <br>
-</p>
+      <% if (posts?.length > 0) { %>
+        <div class="posts-grid">
+          <% posts.forEach(post => { %>
+            <a href="/posts/<%= post._id %>" class="user-post-card">
+              <!-- Post Image -->
+              <% if (post.images && post.images.length > 0) { %>
+                <img src="<%= post.images[0].url %>" alt="<%= post.title %>" class="user-post-image" loading="lazy"/>
+              <% } else { %>
+                <div class="user-post-image-placeholder">
+                  <i class="fas fa-image"></i>
+                </div>
+              <% } %>
+              
+              <!-- Post Content -->
+              <div class="user-post-content">
+                <h3 class="user-post-title"><%= post.title %></h3>
+                <p class="user-post-excerpt"><%= post.content %></p>
+                <div class="user-post-date">
+                  <i class="far fa-calendar"></i>
+                  <span><%= post.createdAt.toDateString() %></span>
+                </div>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <!-- No Posts Message -->
+        <div class="no-posts-message">
+          <i class="far fa-edit"></i>
+          <h3>No Posts Yet</h3>
+          <p>You haven't created any posts yet. Start sharing your thoughts with the world!</p>
+          <a href="/posts/add" class="btn-create-first-post">
+            <i class="fas fa-plus-circle"></i>
+            <span>Create Your First Post</span>
+          </a>
+        </div>
+      <% } %>
+    </div>
 
-<!-- Number of posts -->
-<p>
-    <b>Number of posts: <%= postCount %></b>
-</p>
+  </div>
+</div>
 
-<!-- Action Buttons -->
-<a href="/user/edit" class="btn btn-primary btn-block">Edit Profile</a>
-
-<form action="/user/delete" method="POST" class="mt-3">
-    <button type="submit" class="btn btn-danger btn-block">Delete Account</button>
-</form>
-
-
-<!-- Show Posts -->
- <% if ( posts?.length > 0 ) { %>
-
-    <h2>Posts</h2>
-    <ul>
-        <% for (const post of posts) { %>
-            <li>
-                <p> <a href="/posts/<%= post._id %>"><%= post.title %> </a></p>
-                <img src="<%= post.images[0].url %>" alt="<%= post.title %>" width="300" height="300" style="object-fit: cover;" />
-                <p><%= post.content %></p>
-                
-                <p>Date Created: <%= post.createdAt.toDateString() %></p>
-            </li>
-        <% } %>
-    </ul>
-
-<% } else { %>
-    <p>No posts found.</p>
-<% } %>
 
 
 <%# ---------------- Include Footer Partial ---------------- %>
