@@ -23,11 +23,14 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    // Profile picture (string for URL, public_id if stored on Cloudinary or similar)
+    // Profile picture ( URL, public_id if stored on Cloudinary or similar)
     profilePicture: {
-      type: String,     // profile image URL
-      public_id: String, // optional: image reference ID (e.g., from Cloudinary)
-      url: String        // image URL
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      },
     },
 
     // Short bio or description about the user
