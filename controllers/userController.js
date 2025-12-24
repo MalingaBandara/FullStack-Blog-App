@@ -153,8 +153,26 @@ exports.deleteUserAccount = asyncHandler(async (req, res) => {
     }
 
 
-    //? ---------------- Handle user's comments on OTHER posts ----------------
-    await Comment.deleteMany({ author: req.user._id }); // * Delete all comments written by the user on other posts
+     //? ---------------- Handle user's comments on OTHER posts ----------------
+    // * Step 1: Find all comments created by the user
+    // * Only fetch the comment IDs to keep the query lightweight
+    const userComments = await Comment.find(
+        { author: req.user._id },
+        { _id: 1 }
+    );
+
+    // * Extract all comment IDs into an array
+    const commentIds = userComments.map(c => c._id);
+
+    // * Step 2: Remove those comment references from posts
+    // * $pull removes matching comment IDs from the comments array in Post documents
+    await Post.updateMany(
+        { comments: { $in: commentIds } },
+        { $pull: { comments: { $in: commentIds } } }
+    );
+
+    // * Step 3: Delete all of the user's comments from the Comment collection
+    await Comment.deleteMany({ _id: { $in: commentIds } });
 
 
     //? ---------------- Delete uploaded files ----------------
@@ -170,7 +188,7 @@ exports.deleteUserAccount = asyncHandler(async (req, res) => {
     //? ---------------- Delete user ----------------
     await User.findByIdAndDelete(req.user._id); // * Finally, delete the user account from MongoDB
 
-    
+
     //? ---------------- Logout & destroy session ----------------
     req.logout((err) => { // * Log the user out and destroy the session
         if (err) {
