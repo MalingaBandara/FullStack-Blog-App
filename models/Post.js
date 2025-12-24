@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // ---------------- Post Schema Definition ----------------
 const postSchema = new mongoose.Schema(
@@ -6,8 +6,8 @@ const postSchema = new mongoose.Schema(
     // Title of the post (required + trims spaces)
     title: {
       type: String,
-      required: true,  // must have a title
-      trim: true,      // remove extra spaces
+      required: true, // must have a title
+      trim: true, // remove extra spaces
     },
 
     // Content/body of the post (required)
@@ -20,7 +20,7 @@ const postSchema = new mongoose.Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId, // store user id
       required: true,
-      ref: 'User', // references User model
+      ref: "User", // references User model
     },
 
     //Array of images for the post
@@ -37,15 +37,15 @@ const postSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-      }
+      },
     ],
 
     // References to comments on the post
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId, // store comment ids
-        ref: 'Comment', // references Comment model
-      }
+        ref: "Comment", // references Comment model
+      },
     ],
   },
   {
@@ -57,7 +57,7 @@ const postSchema = new mongoose.Schema(
 // ---------------- Model Creation ----------------
 // Compile schema into a Mongoose model called "Post"
 // Collection name will be `posts` in MongoDB
-const Post = mongoose.model('Post', postSchema);
+const Post = mongoose.model("Post", postSchema);
 
 // ---------------- Export ----------------
 module.exports = Post;

@@ -2,7 +2,7 @@
 const express = require("express");// * Import Express framework
 const userRoutes = express.Router(); // * Create a new router instance for user-related routes
 const { ensureAuthenticated } = require("../middlewares/auth"); // * Import authentication middleware to protect routes
-const { getUserProfile, getEditProfileForm, updateProfile } = require("../controllers/userController"); // * Import controller function to handle user profile logic
+const { getUserProfile, getEditProfileForm, updateProfile, deleteUserAccount } = require("../controllers/userController"); // * Import controller function to handle user profile logic
 const upload = require("../config/multer"); // * Import Multer middleware for handling file uploads
 
 //! Get User Profile Route
@@ -17,6 +17,9 @@ userRoutes.get( "/edit", ensureAuthenticated, getEditProfileForm );
 
 //! Update User Profile
 userRoutes.post( "/edit", ensureAuthenticated, upload.single("profilePicture"), updateProfile );
+
+//! Delete User Profile
+userRoutes.post( "/delete", ensureAuthenticated, deleteUserAccount );
 
 
 module.exports = userRoutes; // * Export user routes to be used in main app

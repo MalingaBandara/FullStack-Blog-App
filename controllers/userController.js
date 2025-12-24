@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");// * Import async handler 
 const User = require("../models/User");
 const Post = require("../models/Post");
 const File = require("../models/File");
+const Comment = require("../models/Comment");
 const cloudinary = require("../config/cloudinary");
 
 //! Get User Profile
@@ -112,4 +113,75 @@ exports.updateProfile = asyncHandler(async (req, res) => {
         user,                  // * Updated user data
         success: "Your profile has been updated successfully."
     });
+});
+
+
+
+//! Delete User Account
+exports.deleteUserAccount = asyncHandler(async (req, res) => {
+    
+    const user = await User.findById(req.user._id);// * Find the currently logged-in user by ID
+
+    // * If user does not exist, redirect to login page with error
+    if (!user) {
+        return res.render("login", {
+            title: "Login",        // * Page title
+            user: req.user,        // * Current session user (if any)
+            error: "User not found"
+        });
+    }
+
+
+    //? ---------------- Delete profile picture ----------------
+    if (user.profilePicture && user.profilePicture.public_id) { // * If user has a profile picture, delete it from Cloudinary
+        await cloudinary.uploader.destroy(user.profilePicture.public_id);
+    }
+
+
+    //? ---------------- Delete user's posts ----------------
+    const posts = await Post.find({ author: req.user._id });// * Fetch all posts created by this user
+
+    // * Loop through each post to clean up related resources
+    for (const post of posts) {
+
+        for (const image of post.images) {// * Delete all images related to the post from Cloudinary
+            await cloudinary.uploader.destroy(image.public_id);
+        }
+
+        await Comment.deleteMany({ post: post._id });// * Delete all comments related to this post
+        await Post.findByIdAndDelete(post._id); // * Delete the post itself
+    }
+
+
+    //? ---------------- Handle user's comments on OTHER posts ----------------
+    await Comment.deleteMany({ author: req.user._id }); // * Delete all comments written by the user on other posts
+
+
+    //? ---------------- Delete uploaded files ----------------
+    const files = await File.find({ uploaded_by: req.user._id }); // * Fetch all files uploaded by this user
+
+    // * Delete each uploaded file from Cloudinary and MongoDB
+    for (const file of files) {
+        await cloudinary.uploader.destroy(file.public_id); // * Remove file from Cloudinary
+        await File.findByIdAndDelete(file._id);             // * Remove file record from MongoDB
+    }
+
+
+    //? ---------------- Delete user ----------------
+    await User.findByIdAndDelete(req.user._id); // * Finally, delete the user account from MongoDB
+
+    
+    //? ---------------- Logout & destroy session ----------------
+    req.logout((err) => { // * Log the user out and destroy the session
+        if (err) {
+            return next(err); // * Handle logout error
+        }
+        req.session.destroy((err) => {  // * Destroy session completely after logout
+            if (err) {
+                return next(err); // * Handle session destroy error
+            }
+            res.redirect("/auth/register");// * Redirect user to registration page after account deletion
+        });
+    });
+
 });
