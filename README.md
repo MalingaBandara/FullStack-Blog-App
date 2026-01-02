@@ -2,6 +2,21 @@
 
 A full-featured, modern blog application built with the MERN stack (MongoDB, Express.js, Node.js) featuring user authentication, post management, comments, and cloud-based image storage. **Bits of Thought** demonstrates modern web development practices including secure authentication, RESTful API design, cloud integration, and a beautiful, responsive user interface.
 
+## 📑 Quick Links
+
+- [UI/UX Design Highlights](#-uiux-design-highlights)
+- [Screenshots](#-screenshots)
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [Project Structure](#-project-structure)
+- [Installation & Setup](#-installation--setup)
+- [Usage](#-usage)
+- [Security Features](#-security-features)
+- [Author](#-author)
+- [Acknowledgments](#-acknowledgments)
+
+---
+
 ## 🎨 UI/UX Design Highlights
 
 ### Responsive Design
@@ -308,24 +323,6 @@ The server will start on `http://localhost:3000` (or the port specified in your 
 - **Accessible Design** - User-friendly interface designed for all users
 - **Performance Optimized** - Fast loading times and smooth interactions
 
-## 🚧 Future Enhancements
-
-Potential features for future development:
-- [ ] Like/Dislike functionality for posts
-- [ ] Search and filter posts
-- [ ] Pagination for posts list
-- [ ] Rich text editor for post content
-- [ ] Email verification
-- [ ] Password reset functionality
-- [ ] Social media authentication (OAuth)
-- [ ] Post categories and tags
-- [ ] User following system
-- [ ] Admin dashboard
-- [ ] API documentation with Swagger
-
-## 📝 License
-
-This project is licensed under the ISC License.
 
 ## 👤 Author
 
@@ -350,8 +347,6 @@ This project is licensed under the ISC License.
 
 ---
 
----
-
 ## 🎯 Project Showcase
 
 **Bits of Thought** is a comprehensive blog application that showcases:
@@ -365,7 +360,6 @@ This project is licensed under the ISC License.
 - ✅ Error handling and security best practices
 - ✅ Clean, maintainable code structure
 
-Perfect for demonstrating your skills in job interviews and portfolio presentations!
 
 ---
 
