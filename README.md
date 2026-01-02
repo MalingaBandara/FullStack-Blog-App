@@ -44,17 +44,17 @@ A full-featured, modern blog application built with the MERN stack (MongoDB, Exp
 ## 📸 Screenshots
 
 ### Home Page
-![Home Page](screenshots/home-page.png)
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/home-page.png" alt="Home Page" width="50%">
 
 *Beautiful hero section with animated backgrounds and modern design*
 
 ### Posts Listing
-![Posts Page](screenshots/posts-page.png)
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/post/posts-page.png" alt="Home Page" width="50%">
 
 *Responsive grid layout showcasing all blog posts*
 
 ### Post Details with Comments
-![Post Details](screenshots/post-details.png)
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/post/post-details.png" alt="Home Page" width="50%">
 
 *Detailed post view with image gallery and comment system*
 
