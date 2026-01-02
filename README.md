@@ -59,34 +59,46 @@ A full-featured, modern blog application built with the MERN stack (MongoDB, Exp
 *Detailed post view with image gallery and comment system*
 
 ### Comment Form
-![Comment Form](screenshots/comment-form.png)
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/comment/comment-form.png" alt="Home Page" width="50%">
 
 *Interactive comment form allowing users to add comments to posts*
 
 ### User Profile
-![Profile Page](screenshots/profile-page.png)
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/profile/profile-page.png" alt="Home Page" width="50%">
 
 *User profile page with bio, profile picture, and post history*
 
-### Create/Edit Post
-![Create Post](screenshots/create-post.png)
+### Create Post
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/post/create-post.png" alt="Home Page" width="50%">
 
 *Intuitive post creation form with multiple image upload support*
 
-### Responsive Mobile View
-![Mobile View](screenshots/mobile-view.png)
+### Edit Post
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/post/edit-post.png" alt="Home Page" width="50%">
 
-*Fully responsive design optimized for mobile devices*
+### Add Comment
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/comment/add-comment.png" alt="Home Page" width="50%">
+
+### Edit Comment
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/comment/edit-comment.png" alt="Home Page" width="50%">
+
+### Edit Profile
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/profile/edit-profile.png" alt="Home Page" width="50%">
 
 ### Login Page
-![Login Page](screenshots/login-page.png)
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/login-page.png" alt="Home Page" width="50%">
 
 *Clean and modern login interface*
 
 ### Register Page
-![Register Page](screenshots/register-page.png)
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/register-page.png" alt="Home Page" width="50%">
 
 *User registration form with validation*
+
+### Responsive Mobile View
+<img src="https://github.com/MalingaBandara/FullStack-Blog-App/blob/main/screenshots/mobile-view.png" alt="Home Page" height="1000px">
+
+*Fully responsive design optimized for mobile devices*
 
 ---
 
